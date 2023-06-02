@@ -1,0 +1,27 @@
+
+zaichouyici.png
+size: 933,132
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1
+  rotate: false
+  xy: 520, 16
+  size: 392, 55
+  orig: 392, 55
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 520, 73
+  size: 411, 57
+  orig: 411, 57
+  offset: 0, 0
+  index: -1
+btn
+  rotate: false
+  xy: 2, 2
+  size: 516, 128
+  orig: 520, 129
+  offset: 2, 1
+  index: -1
