@@ -17,12 +17,12 @@
           <count-down :time="time" :style="{lineHeight: 'inherit'}" @finish="onFinish">
             <template #default="timeData">
               <span class="time">{{ timeData.minutes }}</span>
-              <span class="time">分</span>
+              <span class="time"> min</span>
               <span class="time">{{ timeData.seconds }}</span>
-              <span class="time">秒</span>
+              <span class="time"> s</span>
             </template>
           </count-down>
-          <span>内完成注册</span>
+          <span> 内完成注册</span>
         </div>
         <div class="form">
           <div class="phone">
