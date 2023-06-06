@@ -2,7 +2,7 @@
   <div class="page-win">
     <div class="logo-wrap" @click="download">
 <!--      <img class="logo-img" src="../assets/img/float.png" alt="logo">-->
-      <div class="logo-img"><div class="title">点击下载</div></div>
+      <div class="logo-img"><div class="title">click download</div></div>
     </div>
     <section class="top-warp">
       <img @click="back" class="back-img" src="../assets/img/back.png" alt="">
@@ -29,10 +29,10 @@
       </div>
     </section>
     <section class="text-warp">
-      <div>免费商品有效期为24小时,请尽快提取<br/>逾期将失效!</div>
+      <div>This product is valid for 24 hours <br/>please pick it up as soon as possible!</div>
     </section>
     <div class="sub-btn again" @click="again">
-      ¥59 再抽一次
+      $59 Draw again
     </div>
     <section class="btn-warp"></section>
     <section class="flow-warp">
@@ -40,21 +40,21 @@
       <div class="flow-list">
         <div class="flow-item">
           <img src="../assets/img/flow-icon1.png" alt="">
-          <div class="flow-title">1.下载并登录APP</div>
+          <div class="flow-title">1.Download APP</div>
         </div>
         <div class="flow-item">
           <img src="../assets/img/flow-icon2.png" alt="">
-          <div class="flow-title">2.进入仓库<br/>核对商品</div>
+          <div class="flow-title">2.Enter the warehouse page</div>
         </div>
         <div class="flow-item">
           <img src="../assets/img/flow-icon3.png" alt="">
-          <div class="flow-title">3.激活后填写地址<br/>申请发货</div>
+          <div class="flow-title">3.Activate the commodity and ship it</div>
         </div>
       </div>
     </section>
     <div class="sub-btn download-btn" @click="download">
-      点击下载APP<br/>
-      提取商品>>
+      Download APP<br/>
+      receive commodity>>
     </div>
   </div>
 </template>
@@ -93,7 +93,7 @@ export default {
   methods: {
     async getMyGoods() {
       if(!this.isLogin) {
-        showToast('请先登录')
+        showToast('please log in first')
         return this.$router.push('/')
       }
       try {
@@ -141,7 +141,7 @@ export default {
     async start() {
       const userType = await this.getUserState() // 0.不存在，需要创建；1.已创建，未下单新用户；2:老用户
       if(userType === 0) {
-        showToast('请先登录')
+        showToast('please log in first')
         return this.$router.push('/')
       }
       try {
@@ -163,7 +163,7 @@ export default {
               await this.showConfirmDialog()
             }
           } else {
-            showToast('订单创建失败')
+            showToast('Order creation failed')
           }
         }
       } catch (e) {

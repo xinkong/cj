@@ -2,12 +2,12 @@
   <Popup v-model:show="show" :style="{ background: 'transparent', margin: '0', maxWidth: '750px', left: '50%', transform: 'translate(-50%, -50%)' }">
     <div class="popup-wrap">
       <div class="login-popup">
-        <div class="title">我的奖品</div>
+        <div class="title">My Rewards</div>
         <div class="prize-wrap">
           <img src="../assets/img/null-prize.png" alt="">
         </div>
         <div class="sub-btn" @click="handlePrize">
-          立即抽奖 首抽0元<Icon name="arrow" />
+          Open boxs first $0<Icon name="arrow" />
         </div>
       </div>
       <div class="close" @click="show=false">

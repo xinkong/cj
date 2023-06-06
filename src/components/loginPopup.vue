@@ -9,36 +9,35 @@
           <img :src="boxSimInfo?.picUrl" alt="">
         </div>
         <div class="new-user-text">
-          <div class="text">新人价:</div>
-          <div class="price">¥0.00</div>
+          <div class="text">Newcomer price:</div>
+          <div class="price">$0.00</div>
           <div class="line-price">{{ boxSimInfo?.symbol + boxSimInfo?.price }}</div>
         </div>
         <div class="time-text">
-          <span>奖品已锁定, 请在</span>
+          <span>commodity Locked, please register in </span>
           <count-down :time="time" :style="{lineHeight: 'inherit'}" @finish="onFinish">
             <template #default="timeData">
-              <span class="time">{{ timeData.minutes }}</span>
-              <span class="time"> min</span>
-              <span class="time">{{ timeData.seconds }}</span>
-              <span class="time"> s</span>
+              <span class="time">{{timeData.minutes}}</span>
+              <span class="time">min</span>
+              <span class="time">{{timeData.seconds}}</span>
+              <span class="time">s</span>
             </template>
           </count-down>
-          <span> 内完成注册</span>
+<!--          <span> 内完成注册</span>-->
         </div>
         <div class="form">
           <div class="content">
-            <Button
+            <Field
                 class="area"
                 v-model="area"
                 maxlength="3"
-                placeholder="区号"
-            >+1</Button>
+                placeholder="area"
+            ></Field>
             <Field
                 class="phone"
                 v-model="phone"
                 type="number"
-                maxlength="11"
-                placeholder="请输入手机号"
+                placeholder="phone number"
             />
 
           </div>
@@ -48,12 +47,12 @@
                 v-model="sms"
                 type="number"
                 maxlength="8"
-                placeholder="请输入短信验证码"
+                placeholder="SMS number"
             >
               <template #button>
                 <div class="sms-text" @click="getSms">
-                  <span v-if="!showTime">获取验证码</span>
-                  <span v-else class="time">{{ time2 }}后重新获取</span>
+                  <span v-if="!showTime">Get SMS</span>
+                  <span v-else class="time">{{ time2 }}Reacquire after</span>
                 </div>
               </template>
             </Field>
@@ -67,12 +66,12 @@
               </div>
             </template>
           </Checkbox>
-          <span>同意</span>
-          <span class="color-text" @click="goRules(1)">《用户协议》</span>与<span class="color-text"
-                                                                           @click="goRules(1)">《隐私政策》</span>
+          <span>Agree</span>
+          <span class="color-text" @click="goRules(1)">《User Agreement》</span>,<span class="color-text"
+                                                                           @click="goRules(2)">《Privacy Policy》</span>
         </div>
         <div class="sub-btn" @click="login">
-          注册
+          Register
         </div>
       </div>
       <div class="close" @click="show=false">
@@ -166,6 +165,7 @@ export default {
     init() {
       this.phone = ''
       this.sms = ''
+      this.area = '+86'
       this.time = 15 * 60 * 1000
       this.agree = false
       this.showTime = false
@@ -179,8 +179,7 @@ export default {
     async getSms() {
       const {showTime, isPhoneNum, phone} = this
       if (showTime) return
-      if (!phone) return showToast('请输入手机号')
-      if (!isPhoneNum.test(phone)) return showToast('请输入正确手机号')
+      if (!phone) return showToast('enter phone number')
       this.showTime = true
       if (this.timer) clearInterval(this.timer)
       this.timer = setInterval(() => {
@@ -210,10 +209,9 @@ export default {
     },
     async login() {
       const {agree, isPhoneNum, phone, sms} = this
-      if (!agree) return showToast('请同意用户协议')
-      if (!phone) return showToast('请输入手机号')
-      if (!isPhoneNum.test(phone)) return showToast('请输入正确手机号')
-      if (!sms) return showToast('请输入验证码')
+      if (!agree) return showToast('agree user agreement')
+      if (!phone) return showToast('enter phone number')
+      if (!sms) return showToast('enter sms code')
       try {
         const {code, data} = await this.$request({
           url: API.smsLogin,
@@ -392,7 +390,7 @@ input.van-field__control::-webkit-input-placeholder {
       .van-field {
         background: #d8b98b;
         border-right: 5px;
-        padding: 20px;
+        padding: 10px;
         font-size: 14px;
       }
     }

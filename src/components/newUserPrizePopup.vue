@@ -4,7 +4,7 @@
       <div class="login-popup">
         <img class="img-1" src="../assets/img/new-user-top-1.png" alt="">
         <div class="time-text">
-          100%必中价值{{ boxSimInfo?.minPrice }}-{{ boxSimInfo?.maxPrice }}元超值商品
+          100% of ${{ boxSimInfo?.minPrice }}-{{ boxSimInfo?.maxPrice }}worth of goods received
         </div>
         <div class="ssr-wrap">
           <div class="srr-list">
@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="sub-btn" @click="sub">
-          立即抽奖 {{userType === 2 ? boxSimInfo?.symbol + boxSimInfo?.price : '首抽0元' }}<Icon name="arrow" />
+          Open boxs {{userType === 2 ? boxSimInfo?.symbol + boxSimInfo?.price : 'first $0' }}<Icon name="arrow" />
         </div>
       </div>
       <div class="close" @click="show=false">
@@ -185,7 +185,7 @@ export default {
 
   .time-text {
     min-width: 530px;
-    font-size: 36px;
+    font-size: 30px;
     color: #dc462d;
     margin: 0 auto;
     font-weight: bold;

@@ -14,7 +14,7 @@
             <img v-if="i?.picUrl" class="prize-img" :src="i?.picUrl" :alt="i.title">
           </div>
         </div>
-        <div class="top-slogan">¥59/个 新人首抽免费</div>
+        <div class="top-slogan">$59/  First free</div>
       </div>
       <div class="m-btm">
         <div class="cj-wrap">
@@ -25,7 +25,7 @@
           <img class="img-1" src="../assets/img/cj-bg1.png" alt="">
           <img class="img-2" src="../assets/img/cj-bg2.png" alt="">
           <img class="img-3" src="../assets/img/cj-1.png" alt="" />
-          <div class="label" v-if="userType !== 2">限时0元</div>
+          <div class="label" v-if="userType !== 2">Limited time $0</div>
         </div>
       </div>
     </section>
@@ -41,9 +41,9 @@
       <div class="text-wrap">
         <img src="../assets/img/active-rule.png" alt="">
         <div class="text-des">
-          1、每位新用户都有1次免费抽奖机会，100%可中奖！官方正品包邮到家。<br/>
-          2、奖品领取方式：奖品抽中后将发放至您的仓库中，请到【宾果盲盒】APP内【仓库】页面中申请提货。<br/>
-          3、若您通过非法途径获得奖品的，公司有权不提供奖品，活动最终解释权归杭州绘领网络科技有限公司所有。<br/>
+          1. Each new user has one free lottery opportunity, and 100% of them can win the prize! Official genuine package delivery to home.<br/>
+          2. Award collection method: After winning the prize, it will be distributed to your warehouse. Please apply for pickup on the Warehouse page of the Bingo Blind Box app.<br/>
+          3. If you obtain the prize through illegal means, the company has the right not to provide the prize, and the final interpretation of the event belongs to the organizer.<br/>
         </div>
       </div>
     </section>
@@ -54,7 +54,7 @@
     <Overlay :show="backLoadingShow" :custom-style="{background: 'transparent'}">
       <div class="wrapper" @click.stop>
         <div class="block">
-          <Loading color="#fff" text-color="#fff" vertical>加载中...</Loading>
+          <Loading color="#fff" text-color="#fff" vertical>Loading...</Loading>
         </div>
       </div>
     </Overlay>
@@ -449,11 +449,11 @@ export default {
           top: -46px;
           background: url("../assets/img/tips.png") no-repeat center;
           background-size: 100% 100%;
-          width: 142px;
+          width: 162px;
           height: 46px;
           text-align: center;
           line-height: 37px;
-          font-size: 24px;
+          font-size: 20px;
           color: #ff5137;
           z-index: 10;
         }
