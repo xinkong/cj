@@ -17,13 +17,13 @@
           <span>commodity Locked, please register in </span>
           <count-down :time="time" :style="{lineHeight: 'inherit'}" @finish="onFinish">
             <template #default="timeData">
-              <span class="time">{{timeData.minutes}}</span>
+              <span class="time">{{ timeData.minutes }}</span>
               <span class="time">min</span>
-              <span class="time">{{timeData.seconds}}</span>
+              <span class="time">{{ timeData.seconds }}</span>
               <span class="time">s</span>
             </template>
           </count-down>
-<!--          <span> 内完成注册</span>-->
+          <!--          <span> 内完成注册</span>-->
         </div>
         <div class="form">
           <div class="content">
@@ -41,7 +41,7 @@
             />
 
           </div>
-
+          <div id="sign-in-button"></div>
           <div class="sms">
             <Field
                 v-model="sms"
@@ -68,7 +68,7 @@
           </Checkbox>
           <span>Agree</span>
           <span class="color-text" @click="goRules(1)">《User Agreement》</span>,<span class="color-text"
-                                                                           @click="goRules(2)">《Privacy Policy》</span>
+                                                                                     @click="goRules(2)">《Privacy Policy》</span>
         </div>
         <div class="sub-btn" @click="login">
           Register
@@ -84,6 +84,19 @@
 <script>
 import {Popup, Field, Button, CountDown, Checkbox, showToast} from 'vant';
 import API from "../utils/api";
+import {getAuth, RecaptchaVerifier, signInWithPhoneNumber} from "firebase/auth";
+import {initializeApp} from "firebase/app";
+
+// const auth = getAuth();
+// auth.languageCode = 'it';
+// window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
+//   'size': 'invisible',
+//   'callback': (response) => {
+//     // reCAPTCHA solved, allow signInWithPhoneNumber.
+//     // onSignInSubmit();
+//     console.log("recaptchaVerifier"+response)
+//   }
+// }, auth);
 
 export default {
   components: {Popup, Field, Button, CountDown, Checkbox},
@@ -144,24 +157,6 @@ export default {
     clearInterval(this.timer)
   },
   methods: {
-    // 点击取消的按钮
-    onCancel() {
-      this.searchVal = ''
-      this.$router.go(-1)
-    },
-    // 选择国家
-    choose(index, obj) {
-      this.iselct = index;
-      this.getCountry(obj);
-      this.time = setTimeout(() => {
-        this.$router.go(-1);
-        clearTimeout(this.time);
-      }, 1000)
-      console.log(index, obj)
-    },
-    onSearch() {
-
-    },
     init() {
       this.phone = ''
       this.sms = ''
@@ -190,14 +185,68 @@ export default {
         }
         this.time2 -= 1
       }, 1000)
+
+
       try {
-        const {code} = await this.$request({
-          url: API.sendMsg,
-          method: 'post',
-          data: {
-            phone
-          }
-        })
+        console.log("进入:")
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyASpPTPsvWyAu5zjT9TV7GzE5fCjoNx25Q",
+          authDomain: "drawbox-a10a7.firebaseapp.com",
+          projectId: "drawbox-a10a7",
+          storageBucket: "drawbox-a10a7.appspot.com",
+          messagingSenderId: "389872188801",
+          appId: "1:389872188801:web:300bf2f6967eab2316bc80",
+          measurementId: "G-EW1XY1XXPR"
+        };
+
+        const firebase = initializeApp(firebaseConfig);
+
+        const phoneNumber = '+16505552345';
+        const appVerifier = window.recaptchaVerifier;
+        const auth = getAuth();
+        auth.languageCode = 'it';
+        signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+            .then((confirmationResult) => {
+              // SMS sent. Prompt user to type the code from the message, then sign the
+              // user in with confirmationResult.confirm(code).
+              window.confirmationResult = confirmationResult;
+              console.log("confirmationResult:" + JSON.stringify(confirmationResult))
+              // ...
+            }).catch((error) => {
+          // Error; SMS not sent
+          // ...
+          console.log("error:" + error)
+        });
+        // window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
+        //   'size': 'invisible',
+        //   'callback': (response) => {
+        //     console.log("进入2:")
+        //     // reCAPTCHA solved, allow signInWithPhoneNumber.
+        //     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+        //         .then((confirmationResult) => {
+        //           // SMS sent. Prompt user to type the code from the message, then sign the
+        //           // user in with confirmationResult.confirm(code).
+        //           window.confirmationResult = confirmationResult;
+        //           console.log("confirmationResult:"+JSON.stringify(confirmationResult))
+        //           // ...
+        //         }).catch((error) => {
+        //       // Error; SMS not sent
+        //       // ...
+        //       console.log("error:"+error)
+        //     });
+        //   }
+        // }, auth);
+
+
+        //
+        // const {code} = await this.$request({
+        //   url: API.sendMsg,
+        //   method: 'post',
+        //   data: {
+        //     phone
+        //   }
+        // })
         if (code === 0) {
           showToast('短信已发送,请注意查收')
         }
@@ -213,19 +262,32 @@ export default {
       if (!phone) return showToast('enter phone number')
       if (!sms) return showToast('enter sms code')
       try {
-        const {code, data} = await this.$request({
-          url: API.smsLogin,
-          method: 'post',
-          data: {
-            phoneNum: phone,
-            msgCode: sms
-          }
-        })
-        if (code === 0) {
-          const {access_token} = data
-          window.localStorage.setItem('accessToken', access_token)
-          await this.getUserState()
-        }
+
+        const code = '666666';
+        confirmationResult.confirm(code).then((result) => {
+          // User signed in successfully.
+          const user = result.user;
+          // ...
+          console.log("user:" + JSON.stringify(user))
+        }).catch((error) => {
+          // User couldn't sign in (bad verification code?)
+          // ...
+          console.log("error:" + JSON.stringify(error))
+        });
+
+        // const {code, data} = await this.$request({
+        //   url: API.smsLogin,
+        //   method: 'post',
+        //   data: {
+        //     phoneNum: phone,
+        //     msgCode: sms
+        //   }
+        // })
+        // if (code === 0) {
+        //   const {access_token} = data
+        //   window.localStorage.setItem('accessToken', access_token)
+        //   await this.getUserState()
+        // }
       } catch (e) {
 
       }
@@ -378,15 +440,17 @@ input.van-field__control::-webkit-input-placeholder {
   }
 
   .form {
-    .content{
+    .content {
       display: flex;
       align-items: center;
       margin: 0 auto 20px;
       width: 480px;
     }
+
     .area {
       width: 80px;
       background: #d8b98b;
+
       .van-field {
         background: #d8b98b;
         border-right: 5px;
@@ -394,10 +458,12 @@ input.van-field__control::-webkit-input-placeholder {
         font-size: 14px;
       }
     }
+
     .phone {
       width: 390px;
       margin-left: 10px;
       background: #d8b98b;
+
       .van-field {
         background: #d8b98b;
         border-right: 5px;

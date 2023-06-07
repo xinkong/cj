@@ -12,7 +12,19 @@ import VueCountryIntl from 'vue-country-intl';
 // 引入css
 import 'vue-country-intl/lib/vue-country-intl.css'
 
-
+// import { initializeApp } from 'firebase/app';
+//
+// const firebaseConfig = {
+//   apiKey: "AIzaSyASpPTPsvWyAu5zjT9TV7GzE5fCjoNx25Q",
+//   authDomain: "drawbox-a10a7.firebaseapp.com",
+//   projectId: "drawbox-a10a7",
+//   storageBucket: "drawbox-a10a7.appspot.com",
+//   messagingSenderId: "389872188801",
+//   appId: "1:389872188801:web:300bf2f6967eab2316bc80",
+//   measurementId: "G-EW1XY1XXPR"
+// };
+//
+// const firebase = initializeApp(firebaseConfig);
 const app = createApp(App)
 
 // 全局注册组件
