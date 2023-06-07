@@ -202,7 +202,7 @@ export default {
 
         const firebase = initializeApp(firebaseConfig);
 
-        const phoneNumber = '+16505552345';
+        const phoneNumber = phone;
         const appVerifier = window.recaptchaVerifier;
         const auth = getAuth();
         auth.languageCode = 'it';
