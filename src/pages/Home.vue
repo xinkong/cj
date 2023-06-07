@@ -29,14 +29,14 @@
         </div>
       </div>
     </section>
-    <section class="name-list">
-      <div class="text-wrap">
-        <img src="../assets/img/name-list.png" alt="">
-        <div class="text-des">
-          <name-list/>
-        </div>
-      </div>
-    </section>
+<!--    <section class="name-list">-->
+<!--      <div class="text-wrap">-->
+<!--        <img src="../assets/img/name-list.png" alt="">-->
+<!--        <div class="text-des">-->
+<!--          <name-list/>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </section>-->
     <section class="active-rule">
       <div class="text-wrap">
         <img src="../assets/img/active-rule.png" alt="">

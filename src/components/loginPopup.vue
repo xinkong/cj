@@ -1,5 +1,6 @@
 <template>
-  <Popup v-model:show="show" :style="{ background: 'transparent', margin: '0', maxWidth: '750px', left: '50%', transform: 'translate(-50%, -50%)' }">
+  <Popup v-model:show="show"
+         :style="{ background: 'transparent', margin: '0', maxWidth: '750px', left: '50%', transform: 'translate(-50%, -50%)' }">
     <div class="popup-wrap">
       <div class="login-popup">
         <img class="img-1" src="../assets/img/login-top-1.png" alt="">
@@ -27,25 +28,25 @@
         <div class="form">
           <div class="phone">
             <Field
-              v-model="phone"
-              type="number"
-              maxlength="11"
-              placeholder="请输入手机号"
+                v-model="phone"
+                type="number"
+                maxlength="11"
+                placeholder="请输入手机号"
             >
             </Field>
           </div>
 
           <div class="sms">
             <Field
-              v-model="sms"
-              type="number"
-              maxlength="8"
-              placeholder="请输入短信验证码"
+                v-model="sms"
+                type="number"
+                maxlength="8"
+                placeholder="请输入短信验证码"
             >
               <template #button>
                 <div class="sms-text" @click="getSms">
                   <span v-if="!showTime">获取验证码</span>
-                  <span v-else class="time">{{time2}}后重新获取</span>
+                  <span v-else class="time">{{ time2 }}后重新获取</span>
                 </div>
               </template>
             </Field>
@@ -60,7 +61,8 @@
             </template>
           </Checkbox>
           <span>同意</span>
-          <span class="color-text" @click="goRules(1)">《用户协议》</span>与<span class="color-text" @click="goRules(1)">《隐私政策》</span>
+          <span class="color-text" @click="goRules(1)">《用户协议》</span>与<span class="color-text"
+                                                                           @click="goRules(1)">《隐私政策》</span>
         </div>
         <div class="sub-btn" @click="login">
           注册
@@ -73,10 +75,11 @@
   </Popup>
 </template>
 <script>
-import { Popup, Field, Button, CountDown, Checkbox, showToast } from 'vant';
+import {Popup, Field, Button, CountDown, Checkbox, showToast} from 'vant';
 import API from "../utils/api";
+
 export default {
-  components: { Popup, Field, Button, CountDown, Checkbox },
+  components: {Popup, Field, Button, CountDown, Checkbox},
   props: {
     showPopup: {
       type: Boolean,
@@ -84,7 +87,7 @@ export default {
     },
     boxSimInfo: {
       type: Object,
-      default: ()=> {
+      default: () => {
         return {}
       }
     }
@@ -132,14 +135,14 @@ export default {
       this.show = false
     },
     async getSms() {
-      const { showTime, isPhoneNum, phone } = this
+      const {showTime, isPhoneNum, phone} = this
       if (showTime) return
-      if(!phone) return showToast('请输入手机号')
-      if(!isPhoneNum.test(phone)) return showToast('请输入正确手机号')
+      if (!phone) return showToast('请输入手机号')
+      if (!isPhoneNum.test(phone)) return showToast('请输入正确手机号')
       this.showTime = true
       if (this.timer) clearInterval(this.timer)
       this.timer = setInterval(() => {
-        if(this.time2 === 1) {
+        if (this.time2 === 1) {
           clearInterval(this.timer)
           this.time2 = 60
           this.showTime = false
@@ -147,7 +150,7 @@ export default {
         this.time2 -= 1
       }, 1000)
       try {
-        const { code } = await this.$request({
+        const {code} = await this.$request({
           url: API.sendMsg,
           method: 'post',
           data: {
@@ -164,13 +167,14 @@ export default {
       }
     },
     async login() {
-      const { agree, isPhoneNum, phone, sms } = this
-      if(!agree) return showToast('请同意用户协议')
-      if(!phone) return showToast('请输入手机号')
-      if(!isPhoneNum.test(phone)) return showToast('请输入正确手机号')
-      if(!sms) return showToast('请输入验证码')
+
+      const {agree, isPhoneNum, phone, sms} = this
+      if (!agree) return showToast('请同意用户协议')
+      if (!phone) return showToast('请输入手机号')
+      if (!isPhoneNum.test(phone)) return showToast('请输入正确手机号')
+      if (!sms) return showToast('请输入验证码')
       try {
-        const { code, data } = await this.$request({
+        const {code, data} = await this.$request({
           url: API.smsLogin,
           method: 'post',
           data: {
@@ -179,7 +183,7 @@ export default {
           }
         })
         if (code === 0) {
-          const { access_token } = data
+          const {access_token} = data
           window.localStorage.setItem('accessToken', access_token)
           await this.getUserState()
         }
@@ -189,7 +193,7 @@ export default {
     },
     async getUserState() {
       try {
-        const { code, data } = await this.$request({
+        const {code, data} = await this.$request({
           url: API.getUserState,
           method: 'post'
         })
@@ -209,9 +213,29 @@ export default {
     },
     async createNewUser() {
       try {
-        const { code } = await this.$request({
+
+        let bxmId = ''
+
+        // 获取由全部参数组成的字符串。
+        let query = window.location.search.substring(1);
+        // 分割参数，得到每一个参数字符串组成的数组。
+        let vars = query.split('&');
+        // 遍历数组，得到每一个参数字符串。
+        for (let i = 0; i < vars.length; i++) {
+          // 分割每一个参数字符串，得到参数名和参数值组成的数组。
+          var pair = vars[i].split('=');
+          // 如果参数名等于传入的param，则返回该值。
+          if (pair[0] == 'bxm_id') {
+            bxmId = decodeURI(pair[1])
+          }
+        }
+
+        const {code} = await this.$request({
           url: API.createNewUser,
-          method: 'post'
+          method: 'post',
+          data: {
+            bxm_id: bxmId
+          }
         })
         if (code === 0) {
           window.localStorage.setItem('userType', '1')
@@ -235,6 +259,7 @@ input.van-field__control::-webkit-input-placeholder {
   color: #8f7c61;
   font-size: 28px;
 }
+
 .van-checkbox__icon {
   height: auto;
 }
@@ -243,6 +268,7 @@ input.van-field__control::-webkit-input-placeholder {
 .popup-wrap {
   min-height: 100vh;
 }
+
 .login-popup {
   background: transparent url("../assets/img/login-bg.png") no-repeat left bottom;
   background-size: 100% 98%;
@@ -267,6 +293,7 @@ input.van-field__control::-webkit-input-placeholder {
     border-radius: 10px;
     //background-color: #d8b98b;
     margin: 38px auto 0;
+
     img {
       width: 100%;
       height: 100%;
@@ -278,31 +305,36 @@ input.van-field__control::-webkit-input-placeholder {
     align-items: flex-end;
     justify-content: center;
     margin-top: 20px;
+
     .text {
       font-size: 40px;
       color: #00a10b;
       font-weight: bold;
       line-height: 42px;
     }
+
     .price {
       font-size: 42px;
       color: #f90609;
       margin: 0 20px;
       line-height: 42px;
     }
+
     .line-price {
       font-size: 30px;
       color: #8f7c61;
-      text-decoration:line-through;
+      text-decoration: line-through;
       line-height: 1;
     }
   }
+
   .time-text {
     display: flex;
     justify-content: center;
     font-size: 28px;
     color: #a15f00;
     margin: 15px 0;
+
     .time {
       font-size: 28px;
       color: #a15f00;
@@ -343,6 +375,7 @@ input.van-field__control::-webkit-input-placeholder {
         .time {
           font-size: 24px;
         }
+
         &::before {
           content: '';
           position: absolute;
@@ -376,6 +409,7 @@ input.van-field__control::-webkit-input-placeholder {
       background: url("../assets/img/unCheck.png") no-repeat center;
       background-size: 98%;
       position: relative;
+
       img {
         position: absolute;
         left: 0;
@@ -403,11 +437,13 @@ input.van-field__control::-webkit-input-placeholder {
   }
 
 }
+
 .close {
   width: 100%;
   height: 58px;
   margin-top: 30px;
   text-align: center;
+
   img {
     width: 58px;
     height: 58px;
