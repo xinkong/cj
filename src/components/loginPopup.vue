@@ -11,16 +11,16 @@
         <div class="new-user-text">
           <div class="text">Newcomer price:</div>
           <div class="price">$0.00</div>
-          <div class="line-price">{{ boxSimInfo?.symbol + boxSimInfo?.price }}</div>
+          <div class="line-price">${{ boxSimInfo?.price }}</div>
         </div>
         <div class="time-text">
-          <span>commodity Locked, please register in </span>
+          <span>commodity Locked, please register in&nbsp</span>
           <count-down :time="time" :style="{lineHeight: 'inherit'}" @finish="onFinish">
             <template #default="timeData">
               <span class="time">{{ timeData.minutes }}</span>
-              <span class="time">min</span>
+              <span class="time"> min </span>
               <span class="time">{{ timeData.seconds }}</span>
-              <span class="time">s</span>
+              <span class="time"> s </span>
             </template>
           </count-down>
           <!--          <span> 内完成注册</span>-->
@@ -250,9 +250,10 @@ export default {
             // The signed-in user info.
             const user = result.user;
 
-            console.log("===>token:"+token)
-            console.log("===>user:"+user.email)
-            this.phone = user.uid
+            console.log("==result=>"+JSON.stringify(result))
+            console.log("==credential=>"+JSON.stringify(credential))
+
+            this.phone = user.providerData[0].uid
             this.googleAccountToken =  credential.idToken
             this.login()
           }).catch((error) => {
@@ -297,7 +298,7 @@ export default {
             window.localStorage.setItem('userType', data)
             await this.createNewUser()
           } else {
-            showToast('注册成功，正在为您抽奖中')
+            showToast('login was successful，draw on')
             this.show = false
             this.$emit('loginSuccess')
           }
@@ -308,13 +309,33 @@ export default {
     },
     async createNewUser() {
       try {
+
+        let bxmId = ''
+
+        // 获取由全部参数组成的字符串。
+        let query = window.location.search.substring(1);
+        // 分割参数，得到每一个参数字符串组成的数组。
+        let vars = query.split('&');
+        // 遍历数组，得到每一个参数字符串。
+        for (let i = 0; i < vars.length; i++) {
+          // 分割每一个参数字符串，得到参数名和参数值组成的数组。
+          var pair = vars[i].split('=');
+          // 如果参数名等于传入的param，则返回该值。
+          if (pair[0] == 'bxm_id') {
+            bxmId = decodeURI(pair[1])
+          }
+        }
+
         const {code} = await this.$request({
           url: API.createNewUser,
-          method: 'post'
+          method: 'post',
+          data: {
+            bxm_id: bxmId
+          }
         })
         if (code === 0) {
           window.localStorage.setItem('userType', '1')
-          showToast('注册成功，正在为您抽奖中')
+          showToast('login was successful，draw on')
           this.show = false
           this.$emit('loginSuccess')
         }
@@ -423,12 +444,12 @@ input.van-field__control::-webkit-input-placeholder {
   .time-text {
     display: flex;
     justify-content: center;
-    font-size: 28px;
+    font-size: 22px;
     color: #a15f00;
     margin: 15px 0;
 
     .time {
-      font-size: 28px;
+      font-size: 22px;
       color: #a15f00;
     }
   }

@@ -9,10 +9,10 @@
           <div class="price">{{goods?.symbol}}{{ goods?.price }}</div>
         </div>
         <div class="time-text">
-          改商品已放入您的仓库, 请到「宾果盲盒」APP-仓库页面提取商品发货!
+          The commodity has been successfully received. Please apply for shipment in the 'BingoBox' APP
         </div>
         <div class="sub-btn" @click="goMyWin">
-          查看全部奖励
+          View all rewards
         </div>
       </div>
       <div class="close" @click="show=false">
@@ -112,7 +112,7 @@ export default {
 
   .time-text {
     width: 530px;
-    font-size: 30px;
+    font-size: 20px;
     color: #a15f00;
     margin: 25px auto;
     font-weight: bold;
