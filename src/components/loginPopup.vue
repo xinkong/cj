@@ -86,18 +86,17 @@ import {Popup, Field, Button, CountDown, Checkbox, showToast} from 'vant';
 import API from "../utils/api";
 import {getAuth, RecaptchaVerifier, signInWithPhoneNumber} from "firebase/auth";
 import {initializeApp} from "firebase/app";
-
-// const auth = getAuth();
-// auth.languageCode = 'it';
-// window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
-//   'size': 'invisible',
-//   'callback': (response) => {
-//     // reCAPTCHA solved, allow signInWithPhoneNumber.
-//     // onSignInSubmit();
-//     console.log("recaptchaVerifier"+response)
-//   }
-// }, auth);
-
+//步骤1：全局注册 firebase app
+const firebaseConfig = {
+  apiKey: "AIzaSyASpPTPsvWyAu5zjT9TV7GzE5fCjoNx25Q",
+  authDomain: "drawbox-a10a7.firebaseapp.com",
+  projectId: "drawbox-a10a7",
+  storageBucket: "drawbox-a10a7.appspot.com",
+  messagingSenderId: "389872188801",
+  appId: "1:389872188801:web:300bf2f6967eab2316bc80",
+  measurementId: "G-EW1XY1XXPR"
+};
+const firebase = initializeApp(firebaseConfig);
 export default {
   components: {Popup, Field, Button, CountDown, Checkbox},
   props: {
@@ -168,11 +167,11 @@ export default {
       this.time2 = 60
     },
     onFinish() {
-      showToast('已过期')
+      showToast('expired')
       this.show = false
     },
     async getSms() {
-      const {showTime, isPhoneNum, phone} = this
+      const {showTime, isPhoneNum, phone, area} = this
       if (showTime) return
       if (!phone) return showToast('enter phone number')
       this.showTime = true
@@ -185,60 +184,23 @@ export default {
         }
         this.time2 -= 1
       }, 1000)
-
-
       try {
-        console.log("进入:")
+        console.log("进入11:")
 
-        const firebaseConfig = {
-          apiKey: "AIzaSyASpPTPsvWyAu5zjT9TV7GzE5fCjoNx25Q",
-          authDomain: "drawbox-a10a7.firebaseapp.com",
-          projectId: "drawbox-a10a7",
-          storageBucket: "drawbox-a10a7.appspot.com",
-          messagingSenderId: "389872188801",
-          appId: "1:389872188801:web:300bf2f6967eab2316bc80",
-          measurementId: "G-EW1XY1XXPR"
-        };
-
-        const firebase = initializeApp(firebaseConfig);
-
-        const phoneNumber = phone;
-        const appVerifier = window.recaptchaVerifier;
-        const auth = getAuth();
+        //步骤2：设置 reCAPTCHA 验证程序 当前配置为隐形，不用用户点击验证
+        const auth = getAuth(firebase);
         auth.languageCode = 'it';
-        signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-            .then((confirmationResult) => {
-              // SMS sent. Prompt user to type the code from the message, then sign the
-              // user in with confirmationResult.confirm(code).
-              window.confirmationResult = confirmationResult;
-              console.log("confirmationResult:" + JSON.stringify(confirmationResult))
-              // ...
-            }).catch((error) => {
-          // Error; SMS not sent
-          // ...
-          console.log("error:" + error)
-        });
-        // window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
-        //   'size': 'invisible',
-        //   'callback': (response) => {
-        //     console.log("进入2:")
-        //     // reCAPTCHA solved, allow signInWithPhoneNumber.
-        //     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-        //         .then((confirmationResult) => {
-        //           // SMS sent. Prompt user to type the code from the message, then sign the
-        //           // user in with confirmationResult.confirm(code).
-        //           window.confirmationResult = confirmationResult;
-        //           console.log("confirmationResult:"+JSON.stringify(confirmationResult))
-        //           // ...
-        //         }).catch((error) => {
-        //       // Error; SMS not sent
-        //       // ...
-        //       console.log("error:"+error)
-        //     });
-        //   }
-        // }, auth);
-
-
+        window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
+          'size': 'invisible',
+          'callback': (response) => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+            console.log('recaptchaVerifier：', response)
+          }
+        }, auth);
+        const appVerifier = window.recaptchaVerifier;
+        //步骤3：验证通过后，将参数进行发送
+        const phoneNumber = area + phone; //拼接 区号+手机号
+        this.sendCode(auth, phoneNumber,appVerifier)
         //
         // const {code} = await this.$request({
         //   url: API.sendMsg,
@@ -255,6 +217,21 @@ export default {
         this.time2 = 60
         this.showTime = false
       }
+    },
+    //firebase 发送短信验证码
+    sendCode(auth, phoneNumber, appVerifier){
+      signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+          .then((confirmationResult) => {
+            // SMS sent. Prompt user to type the code from the message, then sign the
+            // user in with confirmationResult.confirm(code).
+            window.confirmationResult = confirmationResult;
+            console.log("confirmationResult:" + JSON.stringify(confirmationResult))
+            // ...
+          }).catch((error) => {
+        // Error; SMS not sent
+        // ...
+        console.log("error:" + error)
+      });
     },
     async login() {
       const {agree, isPhoneNum, phone, sms} = this
