@@ -268,11 +268,7 @@ export default {
     }
     ,
     async login() {
-
-      // if (!phone) return showToast('enter phone number')
-      // if (!sms) return showToast('enter sms code')
       try {
-
         const {code, data} = await this.$request({
           url: API.googleLogin,
           method: 'post',
@@ -513,6 +509,7 @@ input.van-field__control::-webkit-input-placeholder {
     justify-content: flex-start;
     width: 480px;
     margin: 0 auto;
+    margin-top: 10px;
     font-size: 20px;
     color: #8f7b61;
 

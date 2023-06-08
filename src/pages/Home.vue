@@ -194,7 +194,7 @@ export default {
           url: API.createOrder,
           method: 'post',
           data: {
-            payType: userType  // 新人0元购的时候 传1，非0元购时传2
+            payType: userType // 新人0元购的时候 传1，非0元购时传2
           }
         })
         if (code === 0) {

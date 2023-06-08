@@ -1,7 +1,7 @@
 const API = {
   sendMsg: '/api/boxLogin/web-center/sendMsg', //获取注册短信
   smsLogin: '/api/boxLogin/web-center/phone-num-login', //短信登入
-  googleLogin: '/api/boxdata/web-center/user/google-login', //Google登录
+  googleLogin: '/api/boxLogin/user/google-login', //Google登录
   getUserState: '/api/boxdata/web-center/user/userState', //检查用户状态
   createNewUser: '/api/boxdata/web-center/user/newUser', //创建用户
   getBoxSimInfo: '/api/boxdata/web-center/box/boxSimInfo', //盒子信息
