@@ -121,7 +121,7 @@ export default {
       let ele = document.createElement('a')
       ele.download = 'bingobox'
       ele.style.display = 'none'
-      ele.href = appSource === 'ios' ? IOSUrl : 'http://file.market.xiaomi.com/download/AppStore/0d759720090fd490aa1347d3927b17b4fe492b305/com.hleen.bingobox_1.1.9.apk'
+      ele.href = appSource === 'ios' ? IOSUrl : 'https://boxpic.manghehe.com/apk/BingoBox.apk'
       document.body.appendChild(ele)
       ele.click()
       document.body.removeChild(ele)
