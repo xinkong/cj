@@ -246,9 +246,9 @@ export default {
           });
 
       await showConfirmDialog({
-        message: '是否已完成支付?',
-        confirmButtonText: '已完成',
-        cancelButtonText: '已取消',
+        message: 'Has the payment been completed?',
+        confirmButtonText: 'Completed',
+        cancelButtonText: 'Canceled',
         beforeClose
       });
     },

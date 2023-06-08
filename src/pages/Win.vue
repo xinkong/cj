@@ -207,9 +207,9 @@ export default {
           });
 
       await showConfirmDialog({
-        message: '是否已完成支付?',
-        confirmButtonText: '已完成',
-        cancelButtonText: '已取消',
+        message: 'Has the payment been completed?',
+        confirmButtonText: 'Completed',
+        cancelButtonText: 'Canceled',
         beforeClose
       });
     },
@@ -358,7 +358,7 @@ export default {
     width: 505px;
     height: 115px;
     margin: 30px auto 0;
-    font-size: 60px;
+    font-size: 40px;
     font-weight: bold;
     color: #fbdfae;
     line-height: 115px;
@@ -418,7 +418,7 @@ export default {
   }
 
   .download-btn {
-    font-size: 48px;
+    font-size: 38px;
     line-height: 1.1;
     padding-top: 10px;
     margin-top: 42px;
