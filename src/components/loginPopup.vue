@@ -25,39 +25,44 @@
           </count-down>
           <!--          <span> 内完成注册</span>-->
         </div>
-        <div class="form">
-          <div class="content">
-            <Field
-                class="area"
-                v-model="area"
-                maxlength="3"
-                placeholder="area"
-            ></Field>
-            <Field
-                class="phone"
-                v-model="phone"
-                type="number"
-                placeholder="phone number"
-            />
 
-          </div>
-          <div id="sign-in-button"></div>
-          <div class="sms">
-            <Field
-                v-model="sms"
-                type="number"
-                maxlength="8"
-                placeholder="SMS number"
-            >
-              <template #button>
-                <div class="sms-text" @click="getSms">
-                  <span v-if="!showTime">Get SMS</span>
-                  <span v-else class="time">{{ time2 }}Reacquire after</span>
-                </div>
-              </template>
-            </Field>
-          </div>
+        <div class="sub-btn" @click="googleAccount">
+          Google Account Register
         </div>
+
+<!--        <div class="form">-->
+<!--          <div class="content">-->
+<!--            <Field-->
+<!--                class="area"-->
+<!--                v-model="area"-->
+<!--                maxlength="3"-->
+<!--                placeholder="area"-->
+<!--            ></Field>-->
+<!--            <Field-->
+<!--                class="phone"-->
+<!--                v-model="phone"-->
+<!--                type="number"-->
+<!--                placeholder="phone number"-->
+<!--            />-->
+
+<!--          </div>-->
+<!--          <div id="sign-in-button"></div>-->
+<!--          <div class="sms">-->
+<!--            <Field-->
+<!--                v-model="sms"-->
+<!--                type="number"-->
+<!--                maxlength="8"-->
+<!--                placeholder="SMS number"-->
+<!--            >-->
+<!--              <template #button>-->
+<!--                <div class="sms-text" @click="getSms">-->
+<!--                  <span v-if="!showTime">Get SMS</span>-->
+<!--                  <span v-else class="time">{{ time2 }}Reacquire after</span>-->
+<!--                </div>-->
+<!--              </template>-->
+<!--            </Field>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class="agree">
           <Checkbox v-model="agree">
             <template #icon="props">
@@ -70,9 +75,7 @@
           <span class="color-text" @click="goRules(1)">《User Agreement》</span>,<span class="color-text"
                                                                                      @click="goRules(2)">《Privacy Policy》</span>
         </div>
-        <div class="sub-btn" @click="login">
-          Register
-        </div>
+
       </div>
       <div class="close" @click="show=false">
         <img src="../assets/img/close.png" alt="">
@@ -84,18 +87,22 @@
 <script>
 import {Popup, Field, Button, CountDown, Checkbox, showToast} from 'vant';
 import API from "../utils/api";
-import {getAuth, RecaptchaVerifier, signInWithPhoneNumber} from "firebase/auth";
+import {getAuth, RecaptchaVerifier, signInWithPhoneNumber, signInWithPopup} from "firebase/auth";
 import {initializeApp} from "firebase/app";
+import {GoogleAuthProvider} from "firebase/auth";
+
+const provider = new GoogleAuthProvider();
 //步骤1：全局注册 firebase app
 const firebaseConfig = {
-  apiKey: "AIzaSyASpPTPsvWyAu5zjT9TV7GzE5fCjoNx25Q",
-  authDomain: "drawbox-a10a7.firebaseapp.com",
-  projectId: "drawbox-a10a7",
-  storageBucket: "drawbox-a10a7.appspot.com",
-  messagingSenderId: "389872188801",
-  appId: "1:389872188801:web:300bf2f6967eab2316bc80",
-  measurementId: "G-EW1XY1XXPR"
+  apiKey: "AIzaSyCA9Wp_RBRDv5JQ6HKgAEiJ3j0B_zNhxSk",
+  authDomain: "bingobox-78023.firebaseapp.com",
+  projectId: "bingobox-78023",
+  storageBucket: "bingobox-78023.appspot.com",
+  messagingSenderId: "1021603499202",
+  appId: "1:1021603499202:web:78fa8db5a5444cd2e5ff5b",
+  measurementId: "G-D72LJV1MVM"
 };
+
 const firebase = initializeApp(firebaseConfig);
 export default {
   components: {Popup, Field, Button, CountDown, Checkbox},
@@ -115,6 +122,7 @@ export default {
     return {
       show: false,
       phone: '',
+      googleAccountToken: '',
       area: '',
       sms: '',
       time: 15 * 60 * 1000,
@@ -185,22 +193,17 @@ export default {
         this.time2 -= 1
       }, 1000)
       try {
-        console.log("进入11:")
-
-        //步骤2：设置 reCAPTCHA 验证程序 当前配置为隐形，不用用户点击验证
-        const auth = getAuth(firebase);
-        auth.languageCode = 'it';
-        window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
-          'size': 'invisible',
-          'callback': (response) => {
-            // reCAPTCHA solved, allow signInWithPhoneNumber.
-            console.log('recaptchaVerifier：', response)
-          }
-        }, auth);
-        const appVerifier = window.recaptchaVerifier;
-        //步骤3：验证通过后，将参数进行发送
-        const phoneNumber = area + phone; //拼接 区号+手机号
-        this.sendCode(auth, phoneNumber,appVerifier)
+        // window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
+        //   'size': 'invisible',
+        //   'callback': (response) => {
+        //     // reCAPTCHA solved, allow signInWithPhoneNumber.
+        //     console.log('recaptchaVerifier：', response)
+        //   }
+        // }, auth);
+        // const appVerifier = window.recaptchaVerifier;
+        // //步骤3：验证通过后，将参数进行发送
+        // const phoneNumber = area + phone; //拼接 区号+手机号
+        // this.sendCode(auth, phoneNumber,appVerifier)
         //
         // const {code} = await this.$request({
         //   url: API.sendMsg,
@@ -219,7 +222,7 @@ export default {
       }
     },
     //firebase 发送短信验证码
-    sendCode(auth, phoneNumber, appVerifier){
+    sendCode(auth, phoneNumber, appVerifier) {
       signInWithPhoneNumber(auth, phoneNumber, appVerifier)
           .then((confirmationResult) => {
             // SMS sent. Prompt user to type the code from the message, then sign the
@@ -233,38 +236,56 @@ export default {
         console.log("error:" + error)
       });
     },
-    async login() {
-      const {agree, isPhoneNum, phone, sms} = this
+    googleAccount(){
+      const {agree} = this
       if (!agree) return showToast('agree user agreement')
-      if (!phone) return showToast('enter phone number')
-      if (!sms) return showToast('enter sms code')
+      const auth = getAuth(firebase);
+      auth.languageCode = 'it';
+
+      signInWithPopup(auth, provider)
+          .then((result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            // The signed-in user info.
+            const user = result.user;
+
+            console.log("===>token:"+token)
+            console.log("===>user:"+user.email)
+            this.phone = user.uid
+            this.googleAccountToken =  credential.idToken
+            this.login()
+          }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log("===>"+error.message)
+      });
+    }
+    ,
+    async login() {
+
+      // if (!phone) return showToast('enter phone number')
+      // if (!sms) return showToast('enter sms code')
       try {
 
-        const code = '666666';
-        confirmationResult.confirm(code).then((result) => {
-          // User signed in successfully.
-          const user = result.user;
-          // ...
-          console.log("user:" + JSON.stringify(user))
-        }).catch((error) => {
-          // User couldn't sign in (bad verification code?)
-          // ...
-          console.log("error:" + JSON.stringify(error))
-        });
-
-        // const {code, data} = await this.$request({
-        //   url: API.smsLogin,
-        //   method: 'post',
-        //   data: {
-        //     phoneNum: phone,
-        //     msgCode: sms
-        //   }
-        // })
-        // if (code === 0) {
-        //   const {access_token} = data
-        //   window.localStorage.setItem('accessToken', access_token)
-        //   await this.getUserState()
-        // }
+        const {code, data} = await this.$request({
+          url: API.googleLogin,
+          method: 'post',
+          data: {
+            code: this.phone,
+            token: this.googleAccountToken
+          }
+        })
+        if (code === 0) {
+          const {access_token} = data
+          window.localStorage.setItem('accessToken', access_token)
+          await this.getUserState()
+        }
       } catch (e) {
 
       }
@@ -307,7 +328,7 @@ export default {
     },
 
     goRules(type) {
-      window.location.href = type === 1 ? 'https://www.manghehe.com/agreement/UserAgreement_cn.html' : 'https://www.manghehe.com/agreement/PrivacyAgreement_cn.html'
+      window.location.href = type === 1 ? 'https://www.manghehe.com/agreement/UserAgreement.html' : 'https://www.manghehe.com/agreement/PrivacyAgreement.html'
     }
   }
 }
@@ -524,7 +545,7 @@ input.van-field__control::-webkit-input-placeholder {
     width: 505px;
     height: 115px;
     margin: 15px auto 0;
-    font-size: 48px;
+    font-size: 30px;
     font-weight: bold;
     color: #fbdfae;
     line-height: 115px;

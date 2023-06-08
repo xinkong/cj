@@ -26,7 +26,7 @@ request.interceptors.request.use(req => {
   req.headers.Authorization = token
   if(req?.showLoading) {
     showLoadingToast({
-      message: '加载中...',
+      message: 'Loading...',
       forbidClick: true,
     })
   }
