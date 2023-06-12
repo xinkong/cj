@@ -1,8 +1,10 @@
 <template>
   <div class="page-win">
     <div class="logo-wrap" @click="download">
-<!--      <img class="logo-img" src="../assets/img/float.png" alt="logo">-->
-      <div class="logo-img"><div class="title">click download</div></div>
+      <!--      <img class="logo-img" src="../assets/img/float.png" alt="logo">-->
+      <div class="logo-img">
+        <div class="title">click download</div>
+      </div>
     </div>
     <section class="top-warp">
       <img @click="back" class="back-img" src="../assets/img/back.png" alt="">
@@ -17,7 +19,7 @@
           <div v-for="i in item" class="swipe-item-c-i">
             <img :src="i.picUrl" alt="">
             <div class="title van-ellipsis">{{ i.title }}</div>
-            <div class="price">{{i.symbol}}{{ i.price }}</div>
+            <div class="price">{{ i.symbol }}{{ i.price }}</div>
           </div>
         </swipe-item>
         <template #indicator="{ active, total }">
@@ -34,7 +36,6 @@
     <div class="sub-btn again" @click="again">
       $59 Draw again
     </div>
-    <section class="btn-warp"></section>
     <section class="flow-warp">
       <img class="flow-title-img" src="../assets/img/win-btm-title.png" alt="">
       <div class="flow-list">
@@ -61,8 +62,9 @@
 <script>
 import {showConfirmDialog, showToast, Swipe, SwipeItem} from 'vant';
 import API from "../utils/api";
+
 export default {
-  components: { Swipe, SwipeItem },
+  components: {Swipe, SwipeItem},
   data() {
     return {
       swipeList: [
@@ -92,17 +94,17 @@ export default {
   },
   methods: {
     async getMyGoods() {
-      if(!this.isLogin) {
+      if (!this.isLogin) {
         showToast('please log in first')
         return this.$router.push('/')
       }
       try {
-        const { code, data } = await this.$request({
+        const {code, data} = await this.$request({
           url: API.getMyGoods,
           method: 'post'
         })
         if (code === 0) {
-          if(data.length){
+          if (data.length) {
             let pList = []
             for (let i = 0; i < Math.ceil(data.length / 2); i++) {
               pList.push([])
@@ -140,12 +142,12 @@ export default {
     },
     async start() {
       const userType = await this.getUserState() // 0.不存在，需要创建；1.已创建，未下单新用户；2:老用户
-      if(userType === 0) {
+      if (userType === 0) {
         showToast('please log in first')
         return this.$router.push('/')
       }
       try {
-        const { code, data } = await this.$request({
+        const {code, data} = await this.$request({
           url: API.createOrder,
           method: 'post',
           data: {
@@ -153,9 +155,9 @@ export default {
           }
         })
         if (code === 0) {
-          const { orderNum, state, payUlr } = data
-          if(state === 1) { //-1.订单创建失败；1.订单创建成功，待支付；
-            if(userType === 1) { //新用户直接抽
+          const {orderNum, state, payUlr} = data
+          if (state === 1) { //-1.订单创建失败；1.订单创建成功，待支付；
+            if (userType === 1) { //新用户直接抽
               await this.completeOrder(orderNum)
             } else { //调起支付
               window.localStorage.setItem('orderNum', orderNum)
@@ -172,7 +174,7 @@ export default {
     },
     async completeOrder(orderNum) {
       try {
-        const { code, data } = await this.$request({
+        const {code, data} = await this.$request({
           url: API.completeOrder,
           method: 'post',
           data: {
@@ -215,7 +217,7 @@ export default {
     },
     async getUserState() {
       try {
-        const { code, data } = await this.$request({
+        const {code, data} = await this.$request({
           url: API.getUserState,
           method: 'post'
         })
@@ -230,7 +232,7 @@ export default {
     back() {
       this.$router.go(-1)
     },
-    handlePrev(){
+    handlePrev() {
       this.$refs.swipeRef.prev()
     },
     handleNext() {
@@ -253,6 +255,7 @@ export default {
     transform: translateY(-75%);
     width: 110px;
     height: 137px;
+
     .logo-img {
       width: 100%;
       height: 100%;
@@ -262,6 +265,7 @@ export default {
       align-items: flex-end;
       justify-content: center;
     }
+
     .title {
       font-size: 24px;
       font-weight: bold;
@@ -275,6 +279,7 @@ export default {
     padding: 30px 0;
     box-sizing: border-box;
     position: relative;
+
     .back-img {
       position: absolute;
       left: 45px;
@@ -282,6 +287,7 @@ export default {
       width: 49px;
       height: 65px;
     }
+
     .top-img {
       width: 399px;
       height: 137px;
@@ -297,11 +303,13 @@ export default {
     .swipe-icon {
       width: 67px;
       height: 100px;
+
       img {
         width: 100%;
         height: 100%;
       }
     }
+
     .rt {
       transform: rotate(180deg);
     }
@@ -314,6 +322,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+
         .swipe-item-c-i {
           width: 275px;
           height: 308px;
@@ -323,12 +332,14 @@ export default {
           justify-content: center;
           align-items: center;
           background-color: #629fb1;
-          margin:0 15px;
+          margin: 0 15px;
+
           img {
             display: block;
             width: 150px;
             height: 185px;
           }
+
           .title, .price {
             font-size: 24px;
             color: #fff;
@@ -336,6 +347,7 @@ export default {
             text-align: center;
             margin-top: 10px;
           }
+
           .title {
             max-width: 250px;
           }
@@ -357,7 +369,7 @@ export default {
   .sub-btn {
     width: 505px;
     height: 115px;
-    margin: 30px auto 0;
+    margin: 20px auto 0;
     font-size: 40px;
     font-weight: bold;
     color: #fbdfae;
@@ -381,16 +393,19 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 60px auto 0;
+    margin: 20px auto 0;
+
     .flow-title-img {
       width: 687px;
       height: 56px;
-      margin-bottom: 50px;
+      margin-bottom: 30px;
     }
+
     .flow-list {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
+
       .flow-item {
         text-align: center;
         color: #a06000;
@@ -399,15 +414,18 @@ export default {
         justify-content: center;
         align-items: center;
         margin-right: 80px;
+
         &:last-child {
           margin-right: 0;
         }
+
         img {
           width: 130px;
           height: 130px;
           display: block;
-          margin-bottom: 18px;
+          margin-bottom: 10px;
         }
+
         .flow-title {
           font-size: 24px;
           font-weight: bold;
@@ -418,7 +436,8 @@ export default {
   }
 
   .download-btn {
-    font-size: 38px;
+    font-size: 30px;
+    height: 80px;
     line-height: 1.1;
     padding-top: 10px;
     margin-top: 42px;

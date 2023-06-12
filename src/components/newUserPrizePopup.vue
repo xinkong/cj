@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="sub-btn" @click="sub">
-          Open boxs {{userType === 2 ? boxSimInfo?.symbol + boxSimInfo?.price : 'first $0' }}<Icon name="arrow" />
+          Open boxs {{userType === 2 ? (boxSimInfo?.symbol + boxSimInfo?.price) : 'first $0' }}<Icon name="arrow" />
         </div>
       </div>
       <div class="close" @click="show=false">

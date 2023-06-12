@@ -386,8 +386,8 @@ input.van-field__control::-webkit-input-placeholder {
   background: transparent url("../assets/img/login-bg.png") no-repeat left bottom;
   background-size: 100% 98%;
   width: 720px;
-  height: 1170px;
-  padding-top: 105px;
+  height: 900px;
+  padding-top: 50px;
   box-sizing: border-box;
 
   .img-1 {
@@ -446,7 +446,7 @@ input.van-field__control::-webkit-input-placeholder {
     justify-content: center;
     font-size: 22px;
     color: #a15f00;
-    margin: 15px 0;
+    margin-top: 10px;
 
     .time {
       font-size: 22px;

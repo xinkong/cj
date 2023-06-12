@@ -14,7 +14,7 @@
             <img v-if="i?.picUrl" class="prize-img" :src="i?.picUrl" :alt="i.title">
           </div>
         </div>
-        <div class="top-slogan">$59/  First free</div>
+        <div class="top-slogan">${{boxSimInfo?.price}}/  First free</div>
       </div>
       <div class="m-btm">
         <div class="cj-wrap">
