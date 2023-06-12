@@ -123,7 +123,7 @@ export default {
       let ele = document.createElement('a')
       ele.download = 'bingobox'
       ele.style.display = 'none'
-      ele.href = appSource === 'ios' ? IOSUrl : 'https://boxpic.manghehe.com/apk/BingoBox.apk'
+      ele.href = appSource === 'ios' ? IOSUrl : 'https://boxpic.manghehe.com/apk/BingoBox_global.apk'
       document.body.appendChild(ele)
       ele.click()
       document.body.removeChild(ele)
