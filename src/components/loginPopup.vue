@@ -30,39 +30,39 @@
           Google Account Register
         </div>
 
-<!--        <div class="form">-->
-<!--          <div class="content">-->
-<!--            <Field-->
-<!--                class="area"-->
-<!--                v-model="area"-->
-<!--                maxlength="3"-->
-<!--                placeholder="area"-->
-<!--            ></Field>-->
-<!--            <Field-->
-<!--                class="phone"-->
-<!--                v-model="phone"-->
-<!--                type="number"-->
-<!--                placeholder="phone number"-->
-<!--            />-->
+        <!--        <div class="form">-->
+        <!--          <div class="content">-->
+        <!--            <Field-->
+        <!--                class="area"-->
+        <!--                v-model="area"-->
+        <!--                maxlength="3"-->
+        <!--                placeholder="area"-->
+        <!--            ></Field>-->
+        <!--            <Field-->
+        <!--                class="phone"-->
+        <!--                v-model="phone"-->
+        <!--                type="number"-->
+        <!--                placeholder="phone number"-->
+        <!--            />-->
 
-<!--          </div>-->
-<!--          <div id="sign-in-button"></div>-->
-<!--          <div class="sms">-->
-<!--            <Field-->
-<!--                v-model="sms"-->
-<!--                type="number"-->
-<!--                maxlength="8"-->
-<!--                placeholder="SMS number"-->
-<!--            >-->
-<!--              <template #button>-->
-<!--                <div class="sms-text" @click="getSms">-->
-<!--                  <span v-if="!showTime">Get SMS</span>-->
-<!--                  <span v-else class="time">{{ time2 }}Reacquire after</span>-->
-<!--                </div>-->
-<!--              </template>-->
-<!--            </Field>-->
-<!--          </div>-->
-<!--        </div>-->
+        <!--          </div>-->
+        <!--          <div id="sign-in-button"></div>-->
+        <!--          <div class="sms">-->
+        <!--            <Field-->
+        <!--                v-model="sms"-->
+        <!--                type="number"-->
+        <!--                maxlength="8"-->
+        <!--                placeholder="SMS number"-->
+        <!--            >-->
+        <!--              <template #button>-->
+        <!--                <div class="sms-text" @click="getSms">-->
+        <!--                  <span v-if="!showTime">Get SMS</span>-->
+        <!--                  <span v-else class="time">{{ time2 }}Reacquire after</span>-->
+        <!--                </div>-->
+        <!--              </template>-->
+        <!--            </Field>-->
+        <!--          </div>-->
+        <!--        </div>-->
         <div class="agree">
           <Checkbox v-model="agree">
             <template #icon="props">
@@ -236,7 +236,7 @@ export default {
         console.log("error:" + error)
       });
     },
-    googleAccount(){
+    googleAccount: function () {
       const {agree} = this
       if (!agree) return showToast('agree user agreement')
       const auth = getAuth(firebase);
@@ -249,13 +249,12 @@ export default {
             const token = credential.accessToken;
             // The signed-in user info.
             const user = result.user;
+            user.getIdToken().then(token => {
+              this.phone = user.uid
+              this.googleAccountToken = token
+              this.login()
+            })
 
-            console.log("==result=>"+JSON.stringify(result))
-            console.log("==credential=>"+JSON.stringify(credential))
-
-            this.phone = user.providerData[0].uid
-            this.googleAccountToken =  credential.idToken
-            this.login()
           }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
@@ -264,7 +263,7 @@ export default {
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log("===>"+error.message)
+        console.log("===>" + error.message)
       });
     }
     ,

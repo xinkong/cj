@@ -24,6 +24,7 @@ request.interceptors.request.use(req => {
   // console.log('req:', req);
   const token = window.localStorage.getItem('accessToken') ? "Bearer " + window.localStorage.getItem('accessToken') : ''
   req.headers.Authorization = token
+  req.headers.version = "EN"
   if(req?.showLoading) {
     showLoadingToast({
       message: 'Loading...',
