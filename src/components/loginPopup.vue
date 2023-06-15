@@ -125,7 +125,7 @@ export default {
       this.phone = ''
       this.sms = ''
       this.time = 15 * 60 * 1000
-      this.agree = false
+      this.agree = true
       this.showTime = false
       this.timer = null
       this.time2 = 60
