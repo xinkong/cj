@@ -7,7 +7,7 @@
           <img src="../assets/img/null-prize.png" alt="">
         </div>
         <div class="sub-btn" @click="handlePrize">
-          Open boxs first $0<Icon name="arrow" />
+          Open boxs first 0<Icon name="arrow" />
         </div>
       </div>
       <div class="close" @click="show=false">
@@ -26,6 +26,7 @@ export default {
       default: false
     }
   },
+
   data() {
     return {
       show: false

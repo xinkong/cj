@@ -14,7 +14,7 @@
             <img v-if="i?.picUrl" class="prize-img" :src="i?.picUrl" :alt="i.title">
           </div>
         </div>
-        <div class="top-slogan">${{boxSimInfo?.price}}/  First free</div>
+        <div class="top-slogan">{{boxSimInfo?.symbol+boxSimInfo?.price}}/  First free</div>
       </div>
       <div class="m-btm">
         <div class="cj-wrap">
@@ -25,7 +25,7 @@
           <img class="img-1" src="../assets/img/cj-bg1.png" alt="">
           <img class="img-2" src="../assets/img/cj-bg2.png" alt="">
           <img class="img-3" src="../assets/img/cj-1.png" alt="" />
-          <div class="label" v-if="userType !== 2">Limited time $0</div>
+          <div class="label" v-if="userType !== 2">Limited time {{boxSimInfo?.symbol?'$':boxSimInfo?.symbol}}0</div>
         </div>
       </div>
     </section>
@@ -49,7 +49,7 @@
     </section>
     <login-popup v-model:showPopup="showLoginPopup" @loginSuccess="loginSuccess" :boxSimInfo="boxSimInfo"/>
     <prize-popup v-model:showPopup="showPrizePopup" :win-info="winInfo"/>
-    <prize-null-popup v-model:showPopup="showPrizeNullPopup" @handlePrize="handlePrize"/>
+    <prize-null-popup v-model:showPopup="showPrizeNullPopup" @handlePrize="handlePrize" />
     <new-user-prize-popup v-if="showNewUserPrizePopup" v-model:showPopup="showNewUserPrizePopup" :boxSimInfo="boxSimInfo" :userType="userType" @handlePrize="handlePrize"/>
     <Overlay :show="backLoadingShow" :custom-style="{background: 'transparent'}">
       <div class="wrapper" @click.stop>
@@ -172,7 +172,8 @@ export default {
         if (code === 0) {
           this.myGoods = data
           if(data?.length) {
-            this.$router.push('/win')
+            this.$router.push({path:'/win',query:this.boxSimInfo})
+            // this.$router.push('/win')
           }  else {
             this.showPrizeNullPopup = true
           }

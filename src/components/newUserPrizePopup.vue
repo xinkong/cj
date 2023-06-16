@@ -4,7 +4,7 @@
       <div class="login-popup">
         <img class="img-1" src="../assets/img/new-user-top-1.png" alt="">
         <div class="time-text">
-          100% of ${{ boxSimInfo?.minPrice }}-{{ boxSimInfo?.maxPrice }}worth of goods received
+          100% of {{ boxSimInfo?.symbol+boxSimInfo?.minPrice }}-{{ boxSimInfo?.maxPrice }} worth of goods received
         </div>
         <div class="ssr-wrap">
           <div class="srr-list">
@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="sub-btn" @click="sub">
-          Open boxs {{userType === 2 ? (boxSimInfo?.symbol + boxSimInfo?.price) : 'first $0' }}<Icon name="arrow" />
+          Open boxs {{userType === 2 ? (boxSimInfo?.symbol + boxSimInfo?.price) : 'first '+(boxSimInfo?.symbol)+'0' }}<Icon name="arrow" />
         </div>
       </div>
       <div class="close" @click="show=false">

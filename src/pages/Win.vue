@@ -1,11 +1,6 @@
 <template>
   <div class="page-win">
-    <div class="logo-wrap" @click="download">
-      <!--      <img class="logo-img" src="../assets/img/float.png" alt="logo">-->
-      <div class="logo-img">
-        <div class="title">click download</div>
-      </div>
-    </div>
+
     <section class="top-warp">
       <img @click="back" class="back-img" src="../assets/img/back.png" alt="">
       <img class="top-img" src="../assets/img/win-top-1.png" alt="title">
@@ -31,10 +26,10 @@
       </div>
     </section>
     <section class="text-warp">
-      <div>This product is valid for 24 hours <br/>please pick it up as soon as possible!</div>
+      <div>This product is valid for  24 hours<br/> please pick it up as soon as possible!</div>
     </section>
     <div class="sub-btn again" @click="again">
-      $59 Draw again
+      {{boxSimInfo?.symbol+boxSimInfo?.price}} Draw again
     </div>
     <section class="flow-warp">
       <img class="flow-title-img" src="../assets/img/win-btm-title.png" alt="">
@@ -56,6 +51,12 @@
     <div class="sub-btn download-btn" @click="download">
       Download APP<br/>
       receive commodity>>
+    </div>
+    <div class="logo-wrap" @click="download">
+      <!--      <img class="logo-img" src="../assets/img/float.png" alt="logo">-->
+      <div class="logo-img">
+        <div class="title">click download</div>
+      </div>
     </div>
   </div>
 </template>
@@ -80,9 +81,11 @@ export default {
         //   { t: '', name: '1', price: '222.00' },
         //   { t: '', name: '2', price: '33.00' },
         // ]
-      ]
+      ],
+      boxSimInfo: this.$route.query
     }
   },
+
   computed: {
     isLogin() {
       const accessToken = window.localStorage.getItem('accessToken')
@@ -251,7 +254,7 @@ export default {
   .logo-wrap {
     position: absolute;
     right: 0;
-    top: 50%;
+    top: 41%;
     transform: translateY(-75%);
     width: 110px;
     height: 137px;

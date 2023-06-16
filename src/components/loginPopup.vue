@@ -10,12 +10,12 @@
         </div>
         <div class="new-user-text">
           <div class="text">Newcomer price:</div>
-          <div class="price">$0.00</div>
-          <div class="line-price">${{ boxSimInfo?.price }}</div>
+          <div class="price">{{boxSimInfo?.symbol}}0.00</div>
+          <div class="line-price">{{boxSimInfo?.symbol+ boxSimInfo?.price }}</div>
         </div>
         <div class="time-text">
-          <span>commodity Locked, please register in&nbsp</span>
-          <count-down :time="time" :style="{lineHeight: 'inherit'}" @finish="onFinish">
+          <span>commodity Locked, register in&nbsp</span>
+          <count-down :time="time"  @finish="onFinish">
             <template #default="timeData">
               <span class="time">{{ timeData.minutes }}</span>
               <span class="time"> min </span>
@@ -445,7 +445,7 @@ input.van-field__control::-webkit-input-placeholder {
     justify-content: center;
     font-size: 22px;
     color: #a15f00;
-    margin-top: 10px;
+    margin: 10px 0;
 
     .time {
       font-size: 22px;
