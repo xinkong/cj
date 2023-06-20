@@ -30,33 +30,33 @@ export default {
   },
   methods:{
     // 获取信息
-    // async getData() {
-    //   this.list = []
-    //   try {
-    //     const { code, data } = await this.$request({
-    //       url: API.getWinInfo,
-    //       method: 'post'
-    //     })
-    //     if (code === 0) {
-    //       this.list = (data || []).map(item => {
-    //         const { createTime, ...other } = item
-    //         return {
-    //           createTimeStr: this.processingTime(createTime),
-    //           createTime,
-    //           ...other
-    //         }
-    //       })
-    //       if(this.list.length < 10) {
-    //         this.list = this.list.concat(this.list);
-    //       }
-    //     }
-    //   } finally {
-    //     if(this.timer) clearTimeout(this.timer)
-    //     this.timer = setTimeout(() => {
-    //       this.getData()
-    //     }, 1000 * 60 * 2)
-    //   }
-    // },
+    async getData() {
+      this.list = []
+      try {
+        const { code, data } = await this.$request({
+          url: API.getWinInfo,
+          method: 'post'
+        })
+        if (code === 0) {
+          this.list = (data || []).map(item => {
+            const { createTime, ...other } = item
+            return {
+              createTimeStr: this.processingTime(createTime),
+              createTime,
+              ...other
+            }
+          })
+          if(this.list.length < 10) {
+            this.list = this.list.concat(this.list);
+          }
+        }
+      } finally {
+        if(this.timer) clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
+          this.getData()
+        }, 1000 * 60 * 2)
+      }
+    },
     processingTime(dateTimeStamp){   //dateTimeStamp是一个时间毫秒，注意时间戳是秒的形式，在这个毫秒的基础上除以1000，就是十位数的时间戳。13位数的都是时间毫秒。
       var minute = 1000 * 60;      //把分，时，天，周，半个月，一个月用毫秒表示
       var hour = minute * 60;

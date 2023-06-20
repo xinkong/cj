@@ -31,14 +31,14 @@
         </div>
       </div>
     </section>
-    <!--    <section class="name-list">-->
-    <!--      <div class="text-wrap">-->
-    <!--        <img src="../assets/img/name-list.png" alt="">-->
-    <!--        <div class="text-des">-->
-    <!--          <name-list/>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </section>-->
+        <section class="name-list">
+          <div class="text-wrap">
+            <img src="../assets/img/name-list.png" alt="">
+            <div class="text-des">
+              <name-list/>
+            </div>
+          </div>
+        </section>
     <section class="active-rule">
       <div class="text-wrap">
         <img src="../assets/img/active-rule.png" alt="">
@@ -115,12 +115,6 @@ export default {
     this.getBoxSimInfo()
     this.getData()
     this.getUserState()
-    // var player = new SVGA.Player('#fingerCanvas');
-    // var parser = new SVGA.Parser('#fingerCanvas'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
-    // parser.load("../assets/img/finger.svga", function(videoItem) {
-    //   player.setVideoItem(videoItem);
-    //   player.startAnimation();
-    // })
   },
 
   mounted() {
@@ -152,15 +146,6 @@ export default {
       player.startAnimation();
     })
   },
-  // initMachineSVGA() {
-  //   let player = new SVGA.Player('#fingerCanvas');
-  //   let parser = new SVGA.Parser('#fingerCanvas');
-  //   parser.load('../assets/img/finger.jpg', function (videoItem) {
-  //     player.setVideoItem(videoItem);
-  //     player.startAnimation();
-  //   })
-  //
-  // },
   methods: {
     async getData() {
       try {
