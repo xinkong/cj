@@ -27,6 +27,7 @@
           <img class="img-2" src="../assets/img/cj-bg2.png" alt="">
           <img class="img-3" src="../assets/img/cj-1.png" alt=""/>
           <div class="label" v-if="userType !== 2">限时0元</div>
+          <div id="fingerCanvas" class="finger"></div>
         </div>
       </div>
     </section>
@@ -79,6 +80,7 @@ import {showToast, showConfirmDialog, Overlay, Loading} from "vant";
 import API from "../utils/api";
 import lottie from 'lottie-web'
 import ljcj from '../assets/json/ljcj.json'
+import SVGA from 'svgaplayerweb'
 
 export default {
   name: 'home',
@@ -104,14 +106,23 @@ export default {
       allGoods: [{}, {}, {}, {}, {}],
       userType: 0,
       backLoadingShow: false,
-      timer: null
+      timer: null,
+      player: null,
+      parser: null,
     }
   },
   created() {
     this.getBoxSimInfo()
     this.getData()
     this.getUserState()
+    // var player = new SVGA.Player('#fingerCanvas');
+    // var parser = new SVGA.Parser('#fingerCanvas'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
+    // parser.load("../assets/img/finger.svga", function(videoItem) {
+    //   player.setVideoItem(videoItem);
+    //   player.startAnimation();
+    // })
   },
+
   mounted() {
     // lottie.loadAnimation({
     //   container: document.getElementById('lottie'), // the dom element that will contain the animation
@@ -134,7 +145,22 @@ export default {
         }, 3000)
       }
     }
+    let player = new SVGA.Player('#fingerCanvas');
+    let parser = new SVGA.Parser('#fingerCanvas');
+    parser.load('https://xinkong-1256187045.cos.ap-shanghai.myqcloud.com/icon/finger.svga', function (videoItem) {
+      player.setVideoItem(videoItem);
+      player.startAnimation();
+    })
   },
+  // initMachineSVGA() {
+  //   let player = new SVGA.Player('#fingerCanvas');
+  //   let parser = new SVGA.Parser('#fingerCanvas');
+  //   parser.load('../assets/img/finger.jpg', function (videoItem) {
+  //     player.setVideoItem(videoItem);
+  //     player.startAnimation();
+  //   })
+  //
+  // },
   methods: {
     async getData() {
       try {
@@ -201,17 +227,18 @@ export default {
         const beforeClose = (action) =>
             new Promise(async (resolve) => {
               if (action === 'confirm') {
-                console.log("dddd")
                 // // 查询支付状态先????????????? 路径传參???? 获取到??? 继续下单
                 // const orderNum = window.localStorage.getItem('orderNum')
                 await this.downloadInfo(2)
+                resolve(true);
+              }else {
                 resolve(true);
               }
             });
         await showConfirmDialog({
           message: '首次免费已抽取，请下载APP查看商品',
           confirmButtonText: '下载领取',
-          showCancelButton:false,
+          cancelButtonText: '取消',
           beforeClose
         });
 
@@ -244,15 +271,15 @@ export default {
       }
     },
 
-    async downloadInfo(downLoadType){
+    async downloadInfo(downLoadType) {
       const {code, data} = await this.$request({
         url: API.downloadInfo,
         method: 'post',
         data: {
-          type:downLoadType
+          type: downLoadType
         }
       })
-      if(code === 0){
+      if (code === 0) {
         this.$downLoadApp()
       }
     },
@@ -331,7 +358,7 @@ export default {
         return -1
       }
     },
-  }
+  },
 }
 </script>
 <style lang="scss" scoped>
@@ -524,6 +551,20 @@ export default {
           background-size: 100% 100%;
           width: 142px;
           height: 46px;
+          text-align: center;
+          line-height: 37px;
+          font-size: 24px;
+          color: #ff5137;
+          z-index: 10;
+        }
+
+        .finger {
+          position: absolute;
+          right: 20px;
+          top: 20px;
+          background-size: 100% 100%;
+          width: 150px;
+          height: 150px;
           text-align: center;
           line-height: 37px;
           font-size: 24px;
