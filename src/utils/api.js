@@ -10,6 +10,7 @@ const API = {
   getMyGoods: '/api/boxdata/web-center/box/myGoods', //我的商品列表
   getMyLastGoodsPic: '/api/boxdata/web-center/box/myLastGoodsPic', //上次获得商品图片
   getWinInfo: '/api/boxdata/web-center/box/winningNews', //11.获取中奖信息（每分钟获取一次，有值就替换原来的列表进行循环）
+  downloadInfo: '/api/boxdata/web-center/box/downloadInfo', //11.获取中奖信息（每分钟获取一次，有值就替换原来的列表进行循环）
 }
 
 export default API

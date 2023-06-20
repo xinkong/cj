@@ -1,5 +1,6 @@
 <template>
   <div class="page-home">
+
     <div class="logo-wrap">
       <img class="logo-img" src="../assets/img/logo.png" alt="logo">
     </div>
@@ -24,19 +25,19 @@
         <div @click="start" id="lottie" class="btm-start-prize">
           <img class="img-1" src="../assets/img/cj-bg1.png" alt="">
           <img class="img-2" src="../assets/img/cj-bg2.png" alt="">
-          <img class="img-3" src="../assets/img/cj-1.png" alt="" />
+          <img class="img-3" src="../assets/img/cj-1.png" alt=""/>
           <div class="label" v-if="userType !== 2">限时0元</div>
         </div>
       </div>
     </section>
-<!--    <section class="name-list">-->
-<!--      <div class="text-wrap">-->
-<!--        <img src="../assets/img/name-list.png" alt="">-->
-<!--        <div class="text-des">-->
-<!--          <name-list/>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </section>-->
+    <!--    <section class="name-list">-->
+    <!--      <div class="text-wrap">-->
+    <!--        <img src="../assets/img/name-list.png" alt="">-->
+    <!--        <div class="text-des">-->
+    <!--          <name-list/>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </section>-->
     <section class="active-rule">
       <div class="text-wrap">
         <img src="../assets/img/active-rule.png" alt="">
@@ -50,7 +51,8 @@
     <login-popup v-model:showPopup="showLoginPopup" @loginSuccess="loginSuccess" :boxSimInfo="boxSimInfo"/>
     <prize-popup v-model:showPopup="showPrizePopup" :win-info="winInfo"/>
     <prize-null-popup v-model:showPopup="showPrizeNullPopup" @handlePrize="handlePrize"/>
-    <new-user-prize-popup v-if="showNewUserPrizePopup" v-model:showPopup="showNewUserPrizePopup" :boxSimInfo="boxSimInfo" :userType="userType" @handlePrize="handlePrize"/>
+    <new-user-prize-popup v-if="showNewUserPrizePopup" v-model:showPopup="showNewUserPrizePopup"
+                          :boxSimInfo="boxSimInfo" :userType="userType" @handlePrize="handlePrize"/>
     <Overlay :show="backLoadingShow" :custom-style="{background: 'transparent'}">
       <div class="wrapper" @click.stop>
         <div class="block">
@@ -58,6 +60,12 @@
         </div>
       </div>
     </Overlay>
+
+    <div class="logo-wrap2" @click="downloadInfo(4)">
+      <div class="logo-img2">
+        <div class="title2">点击下载</div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -67,7 +75,7 @@ import prizePopup from "../components/prizePopup.vue";
 import prizeNullPopup from "../components/prizeNullPopup.vue";
 import newUserPrizePopup from "../components/newUserPrizePopup.vue";
 import nameList from "../components/nameList.vue";
-import { showToast, showConfirmDialog, Overlay, Loading } from "vant";
+import {showToast, showConfirmDialog, Overlay, Loading} from "vant";
 import API from "../utils/api";
 import lottie from 'lottie-web'
 import ljcj from '../assets/json/ljcj.json'
@@ -85,7 +93,7 @@ export default {
     Loading
   },
   data() {
-    return{
+    return {
       showLoginPopup: false,
       showPrizeNullPopup: false,
       showNewUserPrizePopup: false,
@@ -93,7 +101,7 @@ export default {
       boxSimInfo: null,
       myGoods: null,
       winInfo: null,
-      allGoods: [{},{},{},{},{}],
+      allGoods: [{}, {}, {}, {}, {}],
       userType: 0,
       backLoadingShow: false,
       timer: null
@@ -113,13 +121,13 @@ export default {
     //   path: ljcj
     // });
     // 支付回调验证???
-    const { orderNum } = this.$route.query
-    if(orderNum) {
+    const {orderNum} = this.$route.query
+    if (orderNum) {
       const winInfo = window.localStorage.getItem('winInfo')
-      this.winInfo  = JSON.parse(winInfo)
-      if(this.winInfo) {
+      this.winInfo = JSON.parse(winInfo)
+      if (this.winInfo) {
         this.backLoadingShow = true
-        if(this.timer) clearTimeout(this.timer)
+        if (this.timer) clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           this.backLoadingShow = false
           this.winBackPrize(this.winInfo)
@@ -130,7 +138,7 @@ export default {
   methods: {
     async getData() {
       try {
-        const { code, data } = await this.$request({
+        const {code, data} = await this.$request({
           url: API.getBoxGoodsList,
           method: 'post',
           data: {
@@ -146,7 +154,7 @@ export default {
     },
     async getBoxSimInfo() {
       try {
-        const { code, data } = await this.$request({
+        const {code, data} = await this.$request({
           url: API.getBoxSimInfo,
           method: 'post'
         })
@@ -160,20 +168,20 @@ export default {
     },
     async goMyPrize() {
       const isLogin = this.getLoginState()
-      if(!isLogin) {
+      if (!isLogin) {
         this.showLoginPopup = true
         return
       }
       try {
-        const { code, data } = await this.$request({
+        const {code, data} = await this.$request({
           url: API.getMyGoods,
           method: 'post'
         })
         if (code === 0) {
           this.myGoods = data
-          if(data?.length) {
+          if (data?.length) {
             this.$router.push('/win')
-          }  else {
+          } else {
             this.showPrizeNullPopup = true
           }
         }
@@ -188,36 +196,70 @@ export default {
     },
     async start() {
       const userType = await this.getUserState() // 0.不存在，需要创建；1.已创建，未下单新用户；2:老用户
-      if(userType === 0) return this.showLoginPopup = true
-      try {
-        const { code, data } = await this.$request({
-          url: API.createOrder,
-          method: 'post',
-          data: {
-            payType: userType  // 新人0元购的时候 传1，非0元购时传2
-          }
-        })
-        if (code === 0) {
-          const { orderNum, state, payUlr } = data
-          if(state === 1) { //-1.订单创建失败；1.订单创建成功，待支付；
-            if(userType === 1) { //新用户直接抽
-              await this.completeOrder(orderNum)
-            } else { //调起支付
-              window.localStorage.setItem('orderNum', orderNum)
-              window.location.href = payUlr
-              await this.showConfirmDialog()
-            }
-          } else {
-            showToast('订单创建失败')
-          }
-        }
-      } catch (e) {
+      if (userType === 0) return this.showLoginPopup = true
+      if (userType === 2) {
+        const beforeClose = (action) =>
+            new Promise(async (resolve) => {
+              if (action === 'confirm') {
+                console.log("dddd")
+                // // 查询支付状态先????????????? 路径传參???? 获取到??? 继续下单
+                // const orderNum = window.localStorage.getItem('orderNum')
+                await this.downloadInfo(2)
+                resolve(true);
+              }
+            });
+        await showConfirmDialog({
+          message: '首次免费已抽取，请下载APP查看商品',
+          confirmButtonText: '下载领取',
+          showCancelButton:false,
+          beforeClose
+        });
 
+      } else {
+        try {
+          const {code, data} = await this.$request({
+            url: API.createOrder,
+            method: 'post',
+            data: {
+              payType: userType  // 新人0元购的时候 传1，非0元购时传2
+            }
+          })
+          if (code === 0) {
+            const {orderNum, state, payUlr} = data
+            if (state === 1) { //-1.订单创建失败；1.订单创建成功，待支付；
+              if (userType === 1) { //新用户直接抽
+                await this.completeOrder(orderNum)
+              } else { //调起支付
+                window.localStorage.setItem('orderNum', orderNum)
+                window.location.href = payUlr
+                await this.showConfirmDialog()
+              }
+            } else {
+              showToast('订单创建失败')
+            }
+          }
+        } catch (e) {
+
+        }
       }
     },
+
+    async downloadInfo(downLoadType){
+      const {code, data} = await this.$request({
+        url: API.downloadInfo,
+        method: 'post',
+        data: {
+          type:downLoadType
+        }
+      })
+      if(code === 0){
+        this.$downLoadApp()
+      }
+    },
+
     async completeOrder(orderNum) {
       try {
-        const { code, data } = await this.$request({
+        const {code, data} = await this.$request({
           url: API.completeOrder,
           method: 'post',
           data: {
@@ -276,7 +318,7 @@ export default {
     },
     async getUserState() {
       try {
-        const { code, data } = await this.$request({
+        const {code, data} = await this.$request({
           url: API.getUserState,
           method: 'post'
         })
@@ -305,9 +347,34 @@ export default {
     top: 13px;
     width: 93px;
     height: 93px;
+
     .logo-img {
       width: 100%;
       height: 100%;
+    }
+  }
+
+  .logo-wrap2 {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-75%);
+    width: 110px;
+    height: 137px;
+
+    .logo-img2 {
+      width: 100%;
+      height: 100%;
+      background: url("../assets/img/float.png") no-repeat center;
+      background-size: 100% 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .title2 {
+      font-size: 24px;
+      font-weight: bold;
     }
   }
 
@@ -317,6 +384,7 @@ export default {
     align-items: center;
     padding: 15px 0;
     box-sizing: border-box;
+
     .top-img {
       width: 699px;
       height: 244px;
@@ -353,6 +421,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+
         .top-prize-item {
           width: 113px;
           height: 113px;
@@ -381,12 +450,14 @@ export default {
         transform: translateX(-50%);
       }
     }
+
     .m-btm {
       position: relative;
       width: 750px;
       height: 710px;
       background: url("../assets/img/m-btm-bg.png") left top;
       background-size: 100% 100%;
+
       .cj-wrap {
         position: absolute;
         left: 100px;
@@ -423,6 +494,7 @@ export default {
           -webkit-animation: bounce-down 1.4s linear infinite;
           animation: bounce-down 1.4s linear infinite;
         }
+
         .img-2 {
           position: absolute;
           left: 0;
@@ -431,6 +503,7 @@ export default {
           height: 160px;
           z-index: 2;
         }
+
         .img-3 {
           position: absolute;
           left: 30px;
@@ -466,13 +539,14 @@ export default {
     padding: 0 24px 16px 24px;
     box-sizing: border-box;
   }
+
   .active-rule {
     width: 100%;
     padding: 16px 24px 32px;
     box-sizing: border-box;
   }
 
-  .text-wrap  {
+  .text-wrap {
     width: 100%;
     background-color: #e82507;
     color: #ffffff;
@@ -480,11 +554,13 @@ export default {
     min-height: 200px;
     padding: 20px;
     box-sizing: border-box;
+
     img {
       height: 34px;
       width: auto;
       margin: 0 auto;
     }
+
     .text-des {
       margin-top: 15px;
       font-size: 24px;
@@ -506,7 +582,7 @@ export default {
   width: 240px;
   height: 240px;
   border-radius: 15px;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="sub-btn" @click="sub">
-          立即抽奖 {{userType === 2 ? boxSimInfo?.symbol + boxSimInfo?.price : '首抽0元' }}<Icon name="arrow" />
+          {{userType === 2 ? '下载APP 0元购':('立即抽奖 首抽0元')}}<Icon name="arrow" />
         </div>
       </div>
       <div class="close" @click="show=false">
@@ -156,9 +156,22 @@ export default {
       } catch (e) {
       }
     },
-    sub() {
-      this.show = false
-      this.$emit('handlePrize')
+    async sub() {
+      if (this.userType === 2) {
+        const {code, data} = await this.$request({
+          url: API.downloadInfo,
+          method: 'post',
+          data: {
+            type: 3
+          }
+        })
+        if (code === 0) {
+          this.$downLoadApp()
+        }
+      } else {
+        this.show = false
+        this.$emit('handlePrize')
+      }
     }
   }
 }

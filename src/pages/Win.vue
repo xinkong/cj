@@ -1,7 +1,6 @@
 <template>
   <div class="page-win">
     <div class="logo-wrap" @click="download">
-      <!--      <img class="logo-img" src="../assets/img/float.png" alt="logo">-->
       <div class="logo-img">
         <div class="title">点击下载</div>
       </div>
@@ -34,7 +33,7 @@
       <div>免费商品有效期为24小时,请尽快提取<br/>逾期将失效!</div>
     </section>
     <div class="sub-btn again" @click="again">
-      ¥59 再抽一次
+      下载APP 0元购
     </div>
     <section class="btn-warp"></section>
     <section class="flow-warp">
@@ -118,33 +117,19 @@ export default {
 
       }
     },
-    download() {
-      if(this.isWeChat()){
-        showToast("请点击右上角在浏览器中打开")
-      }else {
-        const appSource = this.appSource()
-        const IOSUrl = 'https://apps.apple.com/app/id1670056674'
-        let ele = document.createElement('a')
-        ele.download = 'bingobox'
-        ele.style.display = 'none'
-        ele.href = appSource === 'ios' ? IOSUrl : 'https://boxpic.manghehe.com/apk/BingoBox.apk'
-        document.body.appendChild(ele)
-        ele.click()
-        document.body.removeChild(ele)
+    async download() {
+      const {code, data} = await this.$request({
+        url: API.downloadInfo,
+        method: 'post',
+        data: {
+          type:1
+        }
+      })
+      if(code === 0){
+        this.$downLoadApp()
       }
     },
-    isWeChat() {
-      //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
-      var ua = window.navigator.userAgent.toLowerCase();
-      //通过正则表达式匹配ua中是否含有MicroMessenger字符串
-      if (ua.match(/MicroMessenger/i) == 'micromessenger') {
-        console.log("微信环境")
-        return true;
-      } else {
-        console.log("普通环境")
-        return false;
-      }
-    },
+
     appSource() {
       const u = navigator.userAgent;
       const isiOS = u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
@@ -154,8 +139,18 @@ export default {
         return "android";
       }
     },
-    again() {
-      this.start()
+    async again() {
+      const {code, data} = await this.$request({
+        url: API.downloadInfo,
+        method: 'post',
+        data: {
+          type: 1
+        }
+      })
+      if (code === 0) {
+        this.$downLoadApp()
+      }
+      // this.start()
     },
     async start() {
       const userType = await this.getUserState() // 0.不存在，需要创建；1.已创建，未下单新用户；2:老用户

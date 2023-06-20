@@ -9,10 +9,10 @@
           <div class="price">{{goods?.symbol}}{{ goods?.price }}</div>
         </div>
         <div class="time-text">
-          改商品已放入您的仓库, 请到「宾果盲盒」APP-仓库页面提取商品发货!
+          该商品已放入您的仓库, 请到「宾果盲盒」APP-仓库页面提取商品发货!
         </div>
         <div class="sub-btn" @click="goMyWin">
-          查看全部奖励
+          下载APP领取
         </div>
       </div>
       <div class="close" @click="show=false">
@@ -23,6 +23,7 @@
 </template>
 <script>
 import { Popup, Field, Button, CountDown, Checkbox } from 'vant';
+import API from "../utils/api";
 export default {
   components: {Popup, Field, Button, CountDown, Checkbox},
   props: {
@@ -57,9 +58,19 @@ export default {
     }
   },
   methods: {
-    goMyWin() {
-      this.show = false
-      this.$router.push('/win')
+    async goMyWin() {
+      const {code, data} = await this.$request({
+        url: API.downloadInfo,
+        method: 'post',
+        data: {
+          type: 2
+        }
+      })
+      if (code === 0) {
+        this.$downLoadApp()
+      }
+      // this.show = false
+      // this.$router.push('/win')
     }
   }
 }
