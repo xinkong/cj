@@ -443,12 +443,12 @@ input.van-field__control::-webkit-input-placeholder {
   .time-text {
     display: flex;
     justify-content: center;
-    font-size: 22px;
+    font-size: 28px;
     color: #a15f00;
-    margin: 10px 0;
+    margin: 15px 0;
 
     .time {
-      font-size: 22px;
+      font-size: 28px;
       color: #a15f00;
     }
   }
