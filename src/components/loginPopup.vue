@@ -14,7 +14,7 @@
           <div class="line-price">{{boxSimInfo?.symbol+ boxSimInfo?.price }}</div>
         </div>
         <div class="time-text">
-          <span>commodity Locked, register in&nbsp</span>
+          <span>commodity Locked,register in&nbsp</span>
           <count-down :time="time"  @finish="onFinish">
             <template #default="timeData">
               <span class="time">{{ timeData.minutes }}</span>
