@@ -531,6 +531,11 @@ svgaplayerweb@^2.3.2:
   resolved "https://repo.huaweicloud.com/repository/npm/svgaplayerweb/-/svgaplayerweb-2.3.2.tgz"
   integrity sha512-QuTvNIgy3W6Mi4h74SczEHUtAwb8m3ax7Ai7xRLUuN6hjJh49RGtWOWq1IuF2I7ECcl0HAYn8FcTn99UDz9UiQ==
 
+throttle-debounce@5.0.0:
+  version "5.0.0"
+  resolved "https://repo.huaweicloud.com/repository/npm/throttle-debounce/-/throttle-debounce-5.0.0.tgz"
+  integrity sha512-2iQTSgkkc1Zyk0MeVrt/3BvuOXYPl/R8Z0U2xxo9rjwNciaHDG3R+Lm6dh4EeUci49DanvBnuqI6jshoQQRGEg==
+
 to-regex-range@^5.0.1:
   version "5.0.1"
   resolved "https://registry.npmmirror.com/to-regex-range/-/to-regex-range-5.0.1.tgz"
@@ -574,6 +579,13 @@ vue-router@^4.2.1:
   integrity sha512-nW28EeifEp8Abc5AfmAShy5ZKGsGzjcnZ3L1yc2DYUo+MqbBClrRP9yda3dIekM4I50/KnEwo1wkBLf7kHH5Cw==
   dependencies:
     "@vue/devtools-api" "^6.5.0"
+
+vue3-seamless-scroll@2.0.1:
+  version "2.0.1"
+  resolved "https://repo.huaweicloud.com/repository/npm/vue3-seamless-scroll/-/vue3-seamless-scroll-2.0.1.tgz#7b2d44afe94d545a2fe4affe8f81b884fc713268"
+  integrity sha512-mI3BaDU3pjcPUhVSw3/xNKdfPBDABTi/OdZaZqKysx4cSdNfGRbVvGNDzzptBbJ5S7imv5T55l6x/SqgnxKreg==
+  dependencies:
+    throttle-debounce "5.0.0"
 
 vue@^3.2.47:
   version "3.3.4"

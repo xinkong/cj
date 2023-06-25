@@ -1,35 +1,26 @@
 <template>
-  <div class="list-container">
-    <div :class="list.length ? 'marquee' : ''" id="carList">
-      <template v-for="(item, index) in list" :key="index">
-        <div class="list-item">
-          <div class="item-time van-ellipsis">{{index+","+ item.createTimeStr }}</div>
-          <div class="item-name van-ellipsis">{{ item.nick }}</div>
-          <div class="item-goods van-ellipsis">
-            抽中了 <span class="goods-name">{{ item.goodsName }}</span>
-          </div>
-        </div>
-      </template>
+  <vue3-seamless-scroll :list="list" class="scroll">
+    <div class="item" v-for="(item, index) in list" :key="index">
+      <span class="item-time" v-text="item.createTimeStr"></span>
+      <span class="item-name" v-text="item.nick"></span>
+      <span class="item-goods" v-text="item.goodsName"></span>
     </div>
-  </div>
+  </vue3-seamless-scroll>
 </template>
 <script>
+import { defineComponent, ref } from "vue";
+import { Vue3SeamlessScroll } from "vue3-seamless-scroll";
 import API from "../utils/api";
-export default {
-  data(){
-    return {
-      list: [],
-      timer: null
-    }
+
+export default defineComponent({
+  name: "App",
+  components: {
+    Vue3SeamlessScroll
   },
   mounted() {
     this.getData()
   },
-  destroyed() {
-    clearInterval(this.timer)
-  },
   methods:{
-    // 获取信息
     async getData() {
       this.list = []
       try {
@@ -104,64 +95,46 @@ export default {
       }
       return result;
     }
-  }
-}
+  },
+  data(){
+    return {
+      list: [],
+    }
+  },
+  // setup() {
+  //   const list = ref([
+  //   ]);
+  //   return { list };
+  // },
+});
 </script>
-<style lang="scss" scoped>
-.list-container {
-  width: 100%;
+
+<style>
+.scroll {
   height: 170px;
+  width: 100%;
   overflow: hidden;
-  position: relative;
-  padding: 0 20px;
-  box-sizing: border-box;
 }
-.list-item {
+.scroll .item {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 3px 0;
   font-size: 24px;
   color: #fff;
-
-  .item-time {
-    width: 120px;
-  }
-
-  .item-name {
-    width: 150px;
-  }
-
-  .item-goods {
-    max-width: 400px;
-    flex: 1;
-    .goods-name {
-      color: #ffef82;
-    }
-  }
-
 }
-//无限滚动
-.marquee {
-  //animation-delay: -5s;
-  animation: marquee 60s linear infinite;
+.item-time {
+  width: 120px;
 }
-//.marquee:hover {
-//  animation-play-state: paused;
-//}
-@keyframes marquee {
-  0% {
-    -ms-transform: translateY(0%);
-    -webkit-transform: translateY(0%);
-    -moz-transform: translateY(0%);
-    -o-transform: translateY(0%);
-    transform: translateY(0%);
-  }
-  100% {
-    -ms-transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%);
-  }
+.item-name {
+  width: 150px;
 }
+.item-goods {
+  max-width: 400px;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 </style>

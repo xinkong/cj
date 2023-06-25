@@ -13,7 +13,8 @@ import downLoadApp from "./utils/downLoad";
 
 const app = createApp(App)
 
-app.use(router).mount('#app')
+app.use(router)
+    .mount('#app')
 
 app.config.globalProperties.$isWeChat = isWeChat;
 app.config.globalProperties.$downLoadApp = downLoadApp;
