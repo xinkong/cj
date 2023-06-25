@@ -43,15 +43,17 @@
       <div class="text-wrap">
         <img src="../assets/img/active-rule.png" alt="">
         <div class="text-des">
-          1、每位新用户都有1次免费抽奖机会，100%可中奖！官方正品包邮到家。<br/>
-          2、奖品领取方式：奖品抽中后将发放至您的仓库中，请到【宾果盲盒】APP内【仓库】页面中申请提货。<br/>
-          3、若您通过非法途径获得奖品的，公司有权不提供奖品，活动最终解释权归杭州绘领网络科技有限公司所有。<br/>
+          1.以上中奖产品均为APP里真实有效中奖信息，官方正品；<br/>
+          2.下载APP后即可激活商品发货，新用户免邮费；<br/>
+          3.更多精彩活动详见APP内，十连抽必中手机；<br/>
+          4.宾果盲盒由杭州绘领网络科技有限公司开发，所有证照齐全支持核验！<br/>
         </div>
       </div>
     </section>
     <login-popup v-model:showPopup="showLoginPopup" @loginSuccess="loginSuccess" :boxSimInfo="boxSimInfo"/>
     <prize-popup v-model:showPopup="showPrizePopup" :win-info="winInfo"/>
     <prize-null-popup v-model:showPopup="showPrizeNullPopup" @handlePrize="handlePrize"/>
+    <down-load-popup v-model:showPopup="showDownLoadPopup" @handlePrize="handlePrize"/>
     <new-user-prize-popup v-if="showNewUserPrizePopup" v-model:showPopup="showNewUserPrizePopup"
                           :boxSimInfo="boxSimInfo" :userType="userType" @handlePrize="handlePrize"/>
     <Overlay :show="backLoadingShow" :custom-style="{background: 'transparent'}">
@@ -64,7 +66,7 @@
 
     <div class="logo-wrap2" @click="downloadInfo(4)">
       <div class="logo-img2">
-        <div class="title2">点击下载</div>
+<!--        <div class="title2">点击下载</div>-->
       </div>
     </div>
   </div>
@@ -81,10 +83,12 @@ import API from "../utils/api";
 import lottie from 'lottie-web'
 import ljcj from '../assets/json/ljcj.json'
 import SVGA from 'svgaplayerweb'
+import DownLoadPopup from "../components/downLoadPopup.vue";
 
 export default {
   name: 'home',
   components: {
+    DownLoadPopup,
     cj,
     loginPopup,
     prizePopup,
@@ -98,6 +102,7 @@ export default {
     return {
       showLoginPopup: false,
       showPrizeNullPopup: false,
+      showDownLoadPopup:false,
       showNewUserPrizePopup: false,
       showPrizePopup: false,
       boxSimInfo: null,
@@ -209,23 +214,24 @@ export default {
       const userType = await this.getUserState() // 0.不存在，需要创建；1.已创建，未下单新用户；2:老用户
       if (userType === 0) return this.showLoginPopup = true
       if (userType === 2) {
-        const beforeClose = (action) =>
-            new Promise(async (resolve) => {
-              if (action === 'confirm') {
-                // // 查询支付状态先????????????? 路径传參???? 获取到??? 继续下单
-                // const orderNum = window.localStorage.getItem('orderNum')
-                await this.downloadInfo(2)
-                resolve(true);
-              }else {
-                resolve(true);
-              }
-            });
-        await showConfirmDialog({
-          message: '首次免费已抽取，请下载APP查看商品',
-          confirmButtonText: '下载领取',
-          cancelButtonText: '取消',
-          beforeClose
-        });
+        this.showDownLoadPopup = true
+        // const beforeClose = (action) =>
+        //     new Promise(async (resolve) => {
+        //       if (action === 'confirm') {
+        //         // // 查询支付状态先????????????? 路径传參???? 获取到??? 继续下单
+        //         // const orderNum = window.localStorage.getItem('orderNum')
+        //         await this.downloadInfo(2)
+        //         resolve(true);
+        //       }else {
+        //         resolve(true);
+        //       }
+        //     });
+        // await showConfirmDialog({
+        //   message: '首次免费已抽取，请下载APP查看商品',
+        //   confirmButtonText: '下载领取',
+        //   cancelButtonText: '取消',
+        //   beforeClose
+        // });
 
       } else {
         try {
@@ -349,6 +355,7 @@ export default {
 <style lang="scss" scoped>
 .page-home {
   min-height: 100vh;
+  overflow-x: hidden;
   background: #fe4a31 url("../assets/img/home-bg.jpg") no-repeat left top;
   background-size: 100% 50%;
   position: relative;
@@ -369,7 +376,7 @@ export default {
   .logo-wrap2 {
     position: absolute;
     right: 0;
-    top: 50%;
+    top: 42.5%;
     transform: translateY(-75%);
     width: 110px;
     height: 137px;
@@ -377,7 +384,7 @@ export default {
     .logo-img2 {
       width: 100%;
       height: 100%;
-      background: url("../assets/img/float.png") no-repeat center;
+      background: url("../assets/img/logo2.gif") no-repeat center;
       background-size: 100% 100%;
       display: flex;
       align-items: flex-end;

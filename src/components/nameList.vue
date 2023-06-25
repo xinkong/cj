@@ -3,7 +3,7 @@
     <div :class="list.length ? 'marquee' : ''" id="carList">
       <template v-for="(item, index) in list" :key="index">
         <div class="list-item">
-          <div class="item-time van-ellipsis">{{ item.createTimeStr }}</div>
+          <div class="item-time van-ellipsis">{{index+","+ item.createTimeStr }}</div>
           <div class="item-name van-ellipsis">{{ item.nick }}</div>
           <div class="item-goods van-ellipsis">
             抽中了 <span class="goods-name">{{ item.goodsName }}</span>
@@ -33,7 +33,9 @@ export default {
     async getData() {
       this.list = []
       try {
-        const { code, data } = await this.$request({
+        let req = this.$request
+        req.showLoading = false
+        const { code, data } = await req({
           url: API.getWinInfo,
           method: 'post'
         })
@@ -49,12 +51,13 @@ export default {
           if(this.list.length < 10) {
             this.list = this.list.concat(this.list);
           }
+          console.log("大小:"+this.list.length)
         }
       } finally {
-        if(this.timer) clearTimeout(this.timer)
-        this.timer = setTimeout(() => {
-          this.getData()
-        }, 1000 * 60 * 2)
+        // if(this.timer) clearTimeout(this.timer)
+        // this.timer = setTimeout(() => {
+        //   this.getData()
+        // }, 1000 * 60 * 1)
       }
     },
     processingTime(dateTimeStamp){   //dateTimeStamp是一个时间毫秒，注意时间戳是秒的形式，在这个毫秒的基础上除以1000，就是十位数的时间戳。13位数的都是时间毫秒。
@@ -140,7 +143,7 @@ export default {
 //无限滚动
 .marquee {
   //animation-delay: -5s;
-  animation: marquee 11s linear infinite;
+  animation: marquee 60s linear infinite;
 }
 //.marquee:hover {
 //  animation-play-state: paused;

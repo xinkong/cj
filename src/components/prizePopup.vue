@@ -12,7 +12,7 @@
           该商品已放入您的仓库, 请到「宾果盲盒」APP-仓库页面提取商品发货!
         </div>
         <div class="sub-btn" @click="goMyWin">
-          下载APP领取
+          立即发货
         </div>
       </div>
       <div class="close" @click="show=false">

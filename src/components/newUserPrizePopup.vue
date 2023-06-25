@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="sub-btn" @click="sub">
-          {{userType === 2 ? '下载APP 0元购':('立即抽奖 首抽0元')}}<Icon name="arrow" />
+          {{userType === 2 ? '下载APP享0元购':('立即抽奖 首抽0元')}}<Icon name="arrow" />
         </div>
       </div>
       <div class="close" @click="show=false">

@@ -1,10 +1,10 @@
 <template>
   <div class="page-win">
-    <div class="logo-wrap" @click="download">
-      <div class="logo-img">
-        <div class="title">点击下载</div>
-      </div>
-    </div>
+<!--    <div class="logo-wrap" @click="download">-->
+<!--      <div class="logo-img">-->
+<!--        <div class="title">点击下载</div>-->
+<!--      </div>-->
+<!--    </div>-->
     <section class="top-warp">
       <img @click="back" class="back-img" src="../assets/img/back.png" alt="">
       <img class="top-img" src="../assets/img/win-top-1.png" alt="title">
@@ -33,30 +33,30 @@
       <div>免费商品有效期为24小时,请尽快提取<br/>逾期将失效!</div>
     </section>
     <div class="sub-btn again" @click="again">
-      下载APP 0元购
+      下载APP享0元购
     </div>
     <section class="btn-warp"></section>
-    <section class="flow-warp">
-      <img class="flow-title-img" src="../assets/img/win-btm-title.png" alt="">
-      <div class="flow-list">
-        <div class="flow-item">
-          <img src="../assets/img/flow-icon1.png" alt="">
-          <div class="flow-title">1.下载并登录APP</div>
-        </div>
-        <div class="flow-item">
-          <img src="../assets/img/flow-icon2.png" alt="">
-          <div class="flow-title">2.进入仓库<br/>核对商品</div>
-        </div>
-        <div class="flow-item">
-          <img src="../assets/img/flow-icon3.png" alt="">
-          <div class="flow-title">3.激活后填写地址<br/>申请发货</div>
-        </div>
-      </div>
-    </section>
-    <div class="sub-btn download-btn" @click="download">
-      点击下载APP<br/>
-      提取商品>>
-    </div>
+<!--    <section class="flow-warp">-->
+<!--      <img class="flow-title-img" src="../assets/img/win-btm-title.png" alt="">-->
+<!--      <div class="flow-list">-->
+<!--        <div class="flow-item">-->
+<!--          <img src="../assets/img/flow-icon1.png" alt="">-->
+<!--          <div class="flow-title">1.下载并登录APP</div>-->
+<!--        </div>-->
+<!--        <div class="flow-item">-->
+<!--          <img src="../assets/img/flow-icon2.png" alt="">-->
+<!--          <div class="flow-title">2.进入仓库<br/>核对商品</div>-->
+<!--        </div>-->
+<!--        <div class="flow-item">-->
+<!--          <img src="../assets/img/flow-icon3.png" alt="">-->
+<!--          <div class="flow-title">3.激活后填写地址<br/>申请发货</div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </section>-->
+<!--    <div class="sub-btn download-btn" @click="download">-->
+<!--      点击下载APP<br/>-->
+<!--      提取商品>>-->
+<!--    </div>-->
   </div>
 </template>
 <script>
@@ -256,6 +256,7 @@ export default {
 <style lang="scss" scoped>
 .page-win {
   min-height: 100vh;
+  overflow-x: hidden;
   background: url("../assets/img/home-bg.jpg") no-repeat left top;
   background-size: 100% 100%;
   position: relative;

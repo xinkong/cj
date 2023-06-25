@@ -8,11 +8,13 @@
               <div class="van-slot-item-wrap">
                 <div class="van-slot-item">
                   <img :src="item.items[item.items.length-1].picUrl" alt="">
+
                 </div>
               </div>
               <div v-for="(sitem, index) in item.items" :key="index" class="van-slot-item-wrap">
                 <div class="van-slot-item">
-                  <img :src="sitem.picUrl" alt="">
+                  <img :src="sitem.picUrl" alt="" v-show="!isFirst">
+                  <img src="../assets/img/iphone14pro.png"  v-show="isFirst" alt="">
                 </div>
               </div>
               <div v-for="(sitem, index) in item.items" :key="index" class="van-slot-item-wrap">
@@ -100,7 +102,8 @@ export default {
       slotsIndex: [0, 0, 0], // 中奖索引值
       slotsOpts: null, // 抽奖临时内存区
       slotsStartedAt: null, // 动画内存区
-      allGoods: []
+      allGoods: [],
+      isFirst:true
     };
   },
   watch: {
@@ -152,6 +155,7 @@ export default {
       if (that.slotsOpts) {
         return false;
       }
+      this.isFirst = false
       const { returnObject } = winInfo
       //[{"gradeCode":20,"goodsCode":"BAH80","goodsTitle":"格卡诺网红电吹风 吹风筒（太空灰）","goodsPics":"https://boxpic.manghehe.com/product/goods/listpic/eQTIbOnVxf42TweXgvpUog==_1683686898620_2d34e187-0cb7-4e21-b93a-45b3b4af9641.png!gsv","price":79.00,"symbol":"¥","certifiedUrl":"https://item.jd.com/10038448313512.html"}]
       const winGoods = returnObject[0]
