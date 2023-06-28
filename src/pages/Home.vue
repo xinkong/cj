@@ -379,7 +379,7 @@ export default {
     top: 42.5%;
     transform: translateY(-75%);
     width: 110px;
-    height: 137px;
+    height: 110px;
 
     .logo-img2 {
       width: 100%;
