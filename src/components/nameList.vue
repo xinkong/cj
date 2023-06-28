@@ -22,15 +22,15 @@ export default defineComponent({
   },
   methods:{
     async getData() {
-      this.list = []
       try {
         let req = this.$request
-        req.showLoading = false
         const { code, data } = await req({
           url: API.getWinInfo,
-          method: 'post'
+          method: 'post',
+          showLoading:false
         })
         if (code === 0) {
+          this.list = []
           this.list = (data || []).map(item => {
             const { createTime, ...other } = item
             return {
@@ -45,10 +45,10 @@ export default defineComponent({
           console.log("大小:"+this.list.length)
         }
       } finally {
-        // if(this.timer) clearTimeout(this.timer)
-        // this.timer = setTimeout(() => {
-        //   this.getData()
-        // }, 1000 * 60 * 1)
+        if(this.timer) clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
+          this.getData()
+        }, 1000 * 60 * 1)
       }
     },
     processingTime(dateTimeStamp){   //dateTimeStamp是一个时间毫秒，注意时间戳是秒的形式，在这个毫秒的基础上除以1000，就是十位数的时间戳。13位数的都是时间毫秒。
@@ -81,7 +81,8 @@ export default defineComponent({
       }else if(minC >= 1 && minC <= 59){
         result =" " + parseInt(minC) + "分钟前"
       }else if(diffValue >= 0 && diffValue <= minute){
-        result = "刚刚"
+        // result = "刚刚"
+        result = parseInt(diffValue/1000) +"秒前"
       }else {
         var datetime = new Date();
         datetime.setTime(dateTimeStamp);
@@ -99,6 +100,8 @@ export default defineComponent({
   data(){
     return {
       list: [],
+      timer: null,
+      isFirst:true
     }
   },
   // setup() {

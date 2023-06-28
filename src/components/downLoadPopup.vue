@@ -2,10 +2,10 @@
   <Popup v-model:show="show" :style="{ background: 'transparent', margin: '0', maxWidth: '750px', left: '50%', transform: 'translate(-50%, -50%)' }">
     <div class="popup-wrap">
       <div class="login-popup">
-        <div class="title">下载app</div>
-        <div class="text">首次免费已抽取，请下载APP查看商品</div>
+        <div class="title">下载享0元购</div>
+        <div class="text">免费商品已抽取，<br/>应用市场搜索「宾果盲盒」<br/>下载APP即可激活发货!</div>
         <div class="sub-btn" @click="handlePrize">
-          下载领取
+          下载发货
         </div>
       </div>
       <div class="close" @click="show=false">
@@ -64,28 +64,29 @@ export default {
 <style lang="scss" scoped>
 .popup-wrap {
   min-height: 60vh;
+  overflow-y: hidden;
 }
 .login-popup {
   background: transparent url("../assets/img/prize-null-bg.png") no-repeat left bottom;
   background-size: 100% 100%;
-  width: 704px;
-  height: 820px;
+  width: 604px;
+  height: 680px;
   box-sizing: border-box;
   padding-top: 10px;
 
   .title {
-    font-size: 60px;
+    font-size: 40px;
     font-weight: bolder;
     text-align: center;
     color: #fff;
   }
 
  .text {
-    font-size: 60px;
+    font-size: 40px;
     font-weight: bolder;
     text-align: center;
-    margin-top: 140px;
-    color: #323233;
+    margin-top: 120px;
+    color: #a15f00;
   }
 
   .prize-wrap {
